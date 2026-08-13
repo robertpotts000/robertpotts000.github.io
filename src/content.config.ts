@@ -22,6 +22,10 @@ const pieces = defineCollection({
     featured: z.boolean().optional().default(false),
     /** Hide from the archive without deleting. */
     draft: z.boolean().optional().default(false),
+    /** Outlet it appeared in, decoded from the filename's publication code. Not yet shown on the site. */
+    publication: z.string().optional(),
+    /** Extra context (e.g. book/publisher details) from the doc's <details> tag. Not yet shown on the site. */
+    details: z.string().optional(),
   }),
 });
 

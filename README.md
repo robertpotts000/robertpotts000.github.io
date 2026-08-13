@@ -38,18 +38,37 @@ src/
 public/images/pieces/      card thumbnails + any images pulled from the docs
 ```
 
-Each piece is identified by its **slug** (the file name). The slug is the URL
-(`/journalism/<slug>`) and the key that joins metadata (`src/data/pieces/<slug>.json`) to
-its converted body (`src/pieces/html/<slug>.html`). Keep slugs stable — they are what
-people link to.
+Each piece is identified by its **slug**, derived from the title words in its `.docx`
+filename (see below). The slug is the URL (`/journalism/<slug>`) and the key that joins
+metadata (`src/data/pieces/<slug>.json`) to its converted body
+(`src/pieces/html/<slug>.html`). Keep slugs stable — they are what people link to.
 
 ## Adding a new piece
 
-1. Save the Word document as `content-src/docx/<slug>.docx` (e.g. `the-uses-of-difficulty.docx`).
-2. Run `npm run convert`. This writes `src/pieces/html/<slug>.html` and extracts any
-   embedded images to `public/images/pieces/<slug>/`. It prints a reminder if the piece
-   has no metadata yet. It never overwrites metadata, so it is safe to re-run.
-3. Create `src/data/pieces/<slug>.json` (copy an existing one) and fill in:
+The filename and a few tags inside the document carry most of the metadata, so the
+converter can usually write the metadata file for you.
+
+1. Name the Word document `<Type> <Publication> <YYYY> <MM> <DD> <Title...>.docx` and
+   save it to `content-src/docx/`, e.g. `R G 2001 03 10 John Ashbery.docx`.
+
+   | Token | Meaning | Values |
+   |---|---|---|
+   | 1 | Type letter | `A` Article, `B` Blog, `I` Interview, `O` Obituary, `R` Review |
+   | 2 | Publication code | `TLS`, `G` Guardian, `T` Times, `S` Spectator, `DT` Daily Telegraph, `LRB`, `NS` New Statesman, `O` Observer |
+   | 3–5 | Date | `YYYY`, `MM`, `DD` as separate tokens |
+   | 6+ | Title | Becomes the slug — doesn't need to match the on-site headline |
+
+2. At the top of the document, as their own paragraphs, optionally include
+   `<headline>...</headline>`, `<subheading>...</subheading>`, and/or
+   `<details>...</details>`. These are stripped from the body and used as metadata.
+   `details` is stored but not currently rendered on the site.
+3. Run `npm run convert`. This writes `src/pieces/html/<slug>.html`, extracts any
+   embedded images to `public/images/pieces/<slug>/`, and — if the filename parsed and
+   both `<headline>` and `<subheading>` were found — seeds
+   `src/data/pieces/<slug>.json` for you. It never overwrites an existing metadata
+   file, so it is always safe to re-run. If anything couldn't be determined, it prints
+   exactly what's missing.
+4. Check the generated (or template) `src/data/pieces/<slug>.json`:
 
    ```json
    {
@@ -58,19 +77,14 @@ people link to.
      "type": "Review",                 // Article | Blog | Interview | Obituary | Review
      "date": "2026-05-18",             // YYYY-MM-DD
      "image": "/images/pieces/the-uses-of-difficulty.svg",
+     "publication": "Guardian",         // from the filename; not yet shown on the site
      "featured": true                   // optional; at most one piece — shown on About
    }
    ```
 
    Add `"draft": true` to keep a piece out of the archive.
-4. Add the card thumbnail referenced by `image` to `public/images/pieces/`.
-5. `npm run dev` to preview, then commit.
-
-The pieces currently in the repo are **placeholder samples** (clearly-marked lorem, with
-SVG placeholder thumbnails) so the site runs before real documents are added. Replace them
-with real content — and update the bio in `src/pages/index.astro`, the prose in
-`src/pages/editing.astro`, and the Substack / LinkedIn URLs at the top of
-`src/pages/index.astro`.
+5. Add the card thumbnail referenced by `image` to `public/images/pieces/`.
+6. `npm run dev` to preview, then commit.
 
 ## Changing the look
 

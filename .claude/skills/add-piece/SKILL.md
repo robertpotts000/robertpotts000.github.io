@@ -22,76 +22,108 @@ Run `git status`. If there are unrelated uncommitted changes, say so and carry
 on — but at the end stage **only** the files this workflow created. Never run
 `git add -A` or `git add .`.
 
-## 1. Gather what you need before touching anything
+## 1. The filename and the document tags carry most of the metadata
 
-**Required — do not invent, guess, or infer these:**
+Robert names each file and tags each document so the converter (`npm run
+convert`, see step 3) can derive most of the required metadata automatically.
+You should not normally need to ask for `type`, `date`, or `publication` — and
+often not `headline` or `subheading` either.
 
-| Field | What to ask for |
-|---|---|
-| The document | The `.docx` file itself. |
-| `headline` | The title as it should appear on the site. |
-| `subheading` | One sentence that draws the reader in. His words, not yours. |
-| `type` | Exactly one of: `Article`, `Blog`, `Interview`, `Obituary`, `Review`. |
-| `date` | Publication date. Convert to `YYYY-MM-DD` and read it back to confirm. |
+**The filename** must follow this convention exactly:
+
+```
+<Type> <Publication> <YYYY> <MM> <DD> <Title...>.docx
+```
+
+e.g. `R G 2001 03 10 John Ashbery.docx`. Space-separated tokens:
+
+| Token | Meaning | Values |
+|---|---|---|
+| 1 | Type letter | `A` Article, `B` Blog, `I` Interview, `O` Obituary, `R` Review |
+| 2 | Publication code | `TLS`, `G` Guardian, `T` Times, `S` Spectator, `DT` Daily Telegraph, `LRB`, `NS` New Statesman, `O` Observer |
+| 3–5 | Date | `YYYY`, `MM`, `DD` as separate tokens |
+| 6+ | Title | Becomes the slug (step 2) — does not need to match the headline |
+
+**The document itself** should have, as the first one to three paragraphs, any
+of `<headline>...</headline>`, `<subheading>...</subheading>`,
+`<details>...</details>` — each tag on its own paragraph. The converter reads
+these, strips them from the body, and uses them to seed the metadata.
+
+**Required — do not invent, guess, or infer these if the converter can't find them:**
+
+| Field | Source | If missing, ask for |
+|---|---|---|
+| The document | Supplied by Robert | The `.docx` file itself. |
+| `headline` | `<headline>` tag | The title as it should appear on the site. |
+| `subheading` | `<subheading>` tag | One sentence that draws the reader in. His words, not yours. |
+| `type` | Filename token 1 | Exactly one of: `Article`, `Blog`, `Interview`, `Obituary`, `Review`. |
+| `date` | Filename tokens 3–5 | Publication date. Convert to `YYYY-MM-DD` and read it back to confirm. |
+| `publication` | Filename token 2 | The outlet it appeared in (see table above). |
 
 **Optional — offer, don't insist:**
 
-| Field | Default if not given |
-|---|---|
-| `image` | Generate an SVG placeholder (step 5). |
-| `featured` | Not featured. |
-| `draft` | Not a draft. |
-| slug | Derived from the headline (step 2). |
+| Field | Source | Default if not given |
+|---|---|---|
+| `details` | `<details>` tag | Omitted. Not displayed on the site yet — stored for later. |
+| `image` | Supplied by Robert | Generate an SVG placeholder (step 5). |
+| `featured` | — | Not featured. |
+| `draft` | — | Not a draft. |
 
-If anything required is missing, **stop and ask for all of it in one message** —
-never one question at a time, and never proceed with a placeholder. Say plainly
-what you have and what you still need. For example:
+Once the converter has run (step 3), check what it filled in and read the
+extracted `headline`/`subheading`/`type`/`date`/`publication` back to Robert to
+confirm rather than asking from scratch — he may not remember what he typed in
+the filename. **Only** ask outright for whatever the converter reports as
+still missing (its console output lists exactly this). Never one question at a
+time — ask for everything missing in one message.
 
-> I have the document and the date (18 May 2026). Before I can publish this I
-> still need:
-> - **Headline** — the title as it should appear on the site
-> - **Subheading** — one sentence to draw the reader in
-> - **Type** — Article, Blog, Interview, Obituary or Review
->
-> Optionally: a thumbnail image (I'll make a plain one otherwise), and whether
-> this should be the featured piece on the About page.
+Two exceptions:
+- If the filename doesn't parse or the tags are absent, you may **propose** a
+  headline and subheading drawn from the document body itself, clearly marked
+  as a suggestion, and use them only if he says yes.
+- If he gives extra information there is no field for — a strapline, a
+  co-author — do not add a new JSON key. The schema in `src/content.config.ts`
+  will reject it and the build will fail. Tell him it would need a schema
+  change, and offer to fold it into the subheading instead.
 
-Two exceptions to asking:
-- You may **propose** a headline and subheading drawn from the document itself,
-  clearly marked as a suggestion, and use them only if he says yes.
-- If he gives extra information there is no field for — the publication it
-  appeared in, a strapline, a co-author — do not add a new JSON key. The schema
-  in `src/content.config.ts` will reject it and the build will fail. Tell him it
-  would need a schema change, and offer to fold it into the subheading instead.
+## 2. The slug
 
-## 2. Decide the slug
+The converter derives the slug from the filename's title tokens (everything
+after the date): lowercase, spaces to hyphens, punctuation dropped, ASCII only.
+`R G 2001 03 10 John Ashbery.docx` → `john-ashbery`. It does **not** need to
+match the headline — the filename title can be a short subject tag (an author
+surname, say) even when the on-site headline is more elaborate.
 
-Derive from the headline: lowercase, spaces to hyphens, drop punctuation and
-apostrophes, ASCII only. *The Uses of Difficulty* → `the-uses-of-difficulty`.
-
-Check `src/data/pieces/` and `src/pieces/html/` for a collision. If the slug
-already exists, ask whether this replaces the existing piece or needs a
-different slug — do not silently overwrite.
+Check `src/data/pieces/` and `src/pieces/html/` for a collision before
+converting. If the slug already exists, ask whether this replaces the existing
+piece or the filename's title words need to change — do not silently overwrite.
 
 **Slugs are permanent.** They are the public URL. Never rename one on an
 already-published piece without being asked to explicitly.
 
 ## 3. Convert the document
 
-1. Copy the file to `content-src/docx/<slug>.docx`.
+1. Copy the file into `content-src/docx/`, **keeping its original filename** —
+   do not rename it to the slug. The filename is a metadata source now, not
+   just an identifier.
 2. Run `npm install` first if `node_modules/` is absent.
 3. Run `npm run convert`.
 4. Confirm `src/pieces/html/<slug>.html` now exists and is not empty. If it
    doesn't, stop and report the converter's output — do not hand-write the HTML.
+5. Read the converter's console output. If it wrote
+   `src/data/pieces/<slug>.json` for you, it will say so — that means the
+   filename parsed and both `<headline>` and `<subheading>` tags were found.
+   If instead it lists the piece under "still need attention," it will say
+   exactly what's missing (bad filename, missing tag) — that's what you ask
+   Robert for.
 
 Extracted images land in `public/images/pieces/<slug>/` automatically. The
-converter never overwrites metadata, so it is safe to re-run.
+converter never overwrites metadata, so it is always safe to re-run.
 
 If you cannot run shell commands in this environment, do everything you can with
 files, then stop and give him the exact commands to paste into a terminal in the
 repo folder. Do not claim the piece is published when it isn't.
 
-## 4. Write the metadata
+## 4. Check and finish the metadata
 
 First read `src/content.config.ts` and match the schema as it actually is today.
 As of writing, `src/data/pieces/<slug>.json` looks like:
@@ -103,13 +135,26 @@ As of writing, `src/data/pieces/<slug>.json` looks like:
   "type": "Review",
   "date": "2026-05-18",
   "image": "/images/pieces/the-uses-of-difficulty.svg",
+  "publication": "Guardian",
   "featured": true
 }
 ```
 
-- `image` is a web path with a leading slash, resolved from `public/`.
+If the converter already wrote this file (step 3), read it back to Robert to
+confirm rather than re-deriving it — don't second-guess a correct auto-fill,
+but do catch a wrong filename (e.g. wrong publication code) here rather than
+after publishing. If it didn't write the file, create it by copying an
+existing piece's shape rather than reconstructing it from memory, filling in
+whatever the converter reported as missing.
+
+- `image` is a web path with a leading slash, resolved from `public/`. The
+  converter pre-fills this as `/images/pieces/<slug>.svg` even before the file
+  exists — step 5 is what actually creates it.
+- `details` (optional, from the `<details>` tag) and `publication` (from the
+  filename) are stored but **not currently rendered anywhere on the site** —
+  leave them as the converter wrote them; don't add display markup for them
+  unless separately asked to.
 - Add `"draft": true` only if asked. Omit `featured` entirely when false.
-- Copy an existing JSON file's shape rather than reconstructing it from memory.
 
 ## 5. Thumbnail
 
@@ -156,7 +201,7 @@ site down.
 Only once the build has passed. Stage explicit paths only:
 
 ```bash
-git add content-src/docx/<slug>.docx \
+git add "content-src/docx/<original filename>.docx" \
         src/pieces/html/<slug>.html \
         src/data/pieces/<slug>.json \
         public/images/pieces/<slug>.svg      # or the real image / extracted-images folder
@@ -189,9 +234,14 @@ Tell him, briefly:
 
 ## Never
 
-- Write the subheading, date, or type from your own inference.
+- Write the headline, subheading, date, type, or publication from your own
+  inference when the filename/tags didn't supply them — ask instead.
+- Rename a supplied `.docx` away from the `<Type> <Publication> <YYYY> <MM>
+  <DD> <Title>` convention, or rename it to the slug.
 - Push when the build failed.
 - `git add -A`, `git push --force`, or rename an existing slug uninvited.
 - Add JSON keys that aren't in `src/content.config.ts`.
 - Hand-edit generated files in `src/pieces/html/`.
+- Add display markup for `details` or `publication` unless separately asked —
+  they are stored but intentionally not shown on the site yet.
 - Report success for a step that didn't actually run.
