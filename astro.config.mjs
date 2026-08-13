@@ -6,5 +6,5 @@ import { defineConfig } from 'astro/config';
 // `site` is used to generate absolute URLs (e.g. for sharing individual pieces).
 // Update it to the real domain at deploy time.
 export default defineConfig({
-  site: 'https://robertpotts.example',
+  site: 'https://robertpotts.co.uk',
 });
