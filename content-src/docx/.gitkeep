@@ -1,0 +1,2 @@
+# Drop Robert's .docx files here, then run `npm run convert`.
+# The file name (minus .docx) becomes the piece slug / URL.

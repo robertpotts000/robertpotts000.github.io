@@ -1,0 +1,143 @@
+---
+import TagBadge, { type PieceType } from './TagBadge.astro';
+
+interface Props {
+  slug: string;
+  headline: string;
+  subheading: string;
+  type: PieceType;
+  date: Date;
+  image: string;
+  /** When true, render as a large standalone "hero" card (About page). */
+  hero?: boolean;
+  /** Element tag: <li> inside the carousel, <div> when standalone. */
+  as?: 'li' | 'div';
+}
+const { slug, headline, subheading, type, date, image, hero = false, as = 'li' } = Astro.props;
+
+const Wrapper = as;
+const dateFmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC', // dates are UTC midnight; pin so they don't shift a day on non-UTC builds
+}).format(date);
+const iso = date.toISOString().slice(0, 10);
+---
+
+<Wrapper class:list={['card', { 'card--hero': hero }]} data-headline={headline.toLowerCase()}>
+  <a class="card__link" href={`/journalism/${slug}`}>
+    <div class="card__media">
+      <img src={image} alt="" loading="lazy" decoding="async" width="200" height="200" />
+    </div>
+    <div class="card__body">
+      <h2 class="card__headline">{headline}</h2>
+      <p class="card__subhead">{subheading}</p>
+      <div class="card__footer">
+        <TagBadge type={type} />
+        <time class="card__date" datetime={iso}>{dateFmt}</time>
+      </div>
+    </div>
+  </a>
+</Wrapper>
+
+<style>
+  .card {
+    list-style: none;
+    scroll-snap-align: center;
+    /* Default (out of focus): dimmed and slightly shrunk. */
+    opacity: 0.45;
+    filter: grayscale(0.55);
+    transform: scale(0.95);
+    transition:
+      opacity 0.35s ease,
+      filter 0.35s ease,
+      transform 0.35s ease;
+  }
+  /* The centered card is brought into focus by the carousel script. */
+  .card.in-focus {
+    opacity: 1;
+    filter: none;
+    transform: scale(1);
+  }
+
+  .card__link {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(1rem, 3vw, 2rem);
+    align-items: center;
+    padding: clamp(1rem, 2.5vw, 1.75rem);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    color: inherit;
+    text-decoration: none;
+    transition: box-shadow 0.35s ease;
+  }
+  .card__link:hover {
+    text-decoration: none;
+  }
+  .card.in-focus .card__link {
+    box-shadow: var(--shadow-card);
+  }
+
+  .card__media {
+    flex: 0 0 auto;
+  }
+  .card__media img {
+    width: clamp(96px, 20vw, 168px);
+    height: clamp(96px, 20vw, 168px);
+    object-fit: cover;
+    border-radius: 3px;
+    background: var(--color-bg);
+  }
+
+  .card__headline {
+    font-size: clamp(1.5rem, 3.2vw, 2.15rem);
+    font-weight: 600;
+    line-height: 1.05;
+    margin: 0 0 0.35rem;
+    color: var(--color-ink);
+  }
+  .card__subhead {
+    font-size: 1.05rem;
+    color: var(--color-ink-soft);
+    margin: 0 0 1rem;
+    line-height: 1.4;
+  }
+  .card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .card__date {
+    font-size: 0.95rem;
+    color: var(--color-ink-soft);
+    font-variant-numeric: oldstyle-nums;
+    white-space: nowrap;
+  }
+
+  /* Hero variant used on the About page — always in focus, larger presence. */
+  .card--hero {
+    opacity: 1;
+    filter: none;
+    transform: none;
+  }
+  .card--hero .card__link {
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Stack image above text on narrow screens. */
+  @media (max-width: 34rem) {
+    .card__link {
+      grid-template-columns: 1fr;
+      justify-items: start;
+    }
+    .card__media img {
+      width: clamp(120px, 42vw, 200px);
+      height: clamp(120px, 42vw, 200px);
+    }
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+---
+
+<BaseLayout title="Robert Potts — Editing" active="editing">
+  <div class="page editing">
+    <PageHeader title="Editing" />
+
+    <div class="editing__body">
+      <p class="placeholder-note">
+        Placeholder text — Robert will write about his editing work here.
+      </p>
+      <p>
+        Alongside criticism, I work as an editor: with poets and prose writers, with
+        magazines, and occasionally with book-length manuscripts that have lost their way.
+        This page is where I will describe that work — the kinds of projects I take on, how I
+        like to work with a writer, and a few of the things I have helped bring into print.
+      </p>
+      <p>
+        Good editing is mostly listening. The aim is never to make a piece sound like me, but
+        to help it sound more fully like itself — to find the argument beneath the draft and
+        clear away whatever is standing in its light. Sometimes that means deep structural
+        work; sometimes it is a matter of a dozen small cuts.
+      </p>
+      <p>
+        If you would like to talk about an editing project, the best place to reach me is via
+        the links on the <a href="/">About</a> page.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .editing {
+    padding-top: clamp(2rem, 6vw, 4rem);
+    padding-bottom: 5rem;
+  }
+  .editing__body {
+    margin-top: clamp(1.5rem, 4vw, 2.75rem);
+    max-width: var(--reading-max);
+    font-size: 1.2rem;
+  }
+  .placeholder-note {
+    font-style: italic;
+    color: var(--color-ink-faint);
+    font-size: 1rem;
+  }
+</style>

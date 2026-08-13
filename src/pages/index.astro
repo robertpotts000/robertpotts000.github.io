@@ -1,0 +1,118 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import PieceCard from '../components/PieceCard.astro';
+
+const SUBSTACK_URL = 'https://robertpotts.substack.com/about';
+const LINKEDIN_URL = 'https://uk.linkedin.com/in/robert-potts-rp';
+
+// Pick the hero: the `featured` piece, else the most recent.
+const pieces = (await getCollection('pieces', (p) => !p.data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const hero = pieces.find((p) => p.data.featured) ?? pieces[0];
+---
+
+<BaseLayout title="Robert Potts — About" active="about">
+  <div class="page about">
+    <PageHeader title="About Me" />
+
+    <div class="about__grid">
+      <section class="about__bio" aria-label="About Robert Potts">
+        <p class="placeholder-note">
+          Placeholder biography — Robert will replace the text below.
+        </p>
+        <p>
+          Robert Potts is a literary critic and editor. He writes on poetry and prose for a
+          range of publications, with a particular interest in the difficult, the overlooked,
+          and the quietly ambitious. This paragraph is sample copy: it is here to show how a
+          few sentences of introduction will sit on the page.
+        </p>
+        <p>
+          Over the years his work has ranged across reviews, essays, interviews and
+          obituaries. Alongside the writing collected here, he takes on editing work — helping
+          other writers find the shape of what they are trying to say. There is more on that on
+          the <a href="/editing">Editing</a> page.
+        </p>
+
+        <ul class="about__links" aria-label="Elsewhere">
+          <li>
+            <a href={SUBSTACK_URL} target="_blank" rel="noopener noreferrer">Substack ↗</a>
+          </li>
+          <li>
+            <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+          </li>
+        </ul>
+      </section>
+
+      {
+        hero && (
+          <section class="about__featured" aria-label="Featured piece">
+            <p class="about__featured-eyebrow">Start here</p>
+            <PieceCard
+              as="div"
+              hero
+              slug={hero.id}
+              headline={hero.data.headline}
+              subheading={hero.data.subheading}
+              type={hero.data.type}
+              date={hero.data.date}
+              image={hero.data.image}
+            />
+          </section>
+        )
+      }
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .about {
+    padding-top: clamp(2rem, 6vw, 4rem);
+    padding-bottom: 5rem;
+  }
+  .about__grid {
+    margin-top: clamp(1.5rem, 4vw, 2.75rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .about__bio {
+    max-width: var(--reading-max);
+    font-size: 1.2rem;
+  }
+  .about__links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 0;
+    margin: 1.75rem 0 0;
+  }
+  .about__links a {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+  .about__featured-eyebrow {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    margin: 0 0 0.85rem;
+  }
+  .placeholder-note {
+    font-style: italic;
+    color: var(--color-ink-faint);
+    font-size: 1rem;
+  }
+
+  @media (max-width: 52rem) {
+    .about__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

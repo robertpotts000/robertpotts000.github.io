@@ -1,0 +1,49 @@
+---
+interface Props {
+  /** Large page name shown on the left. */
+  title: string;
+}
+const { title } = Astro.props;
+const hasAside = Astro.slots.has('aside');
+---
+
+<div class="page-header">
+  <h1 class="page-header__title">{title}</h1>
+  {
+    hasAside && (
+      <div class="page-header__aside">
+        <slot name="aside" />
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem 2rem;
+    flex-wrap: wrap;
+  }
+  .page-header__title {
+    font-size: clamp(2.75rem, 7vw, 4.5rem);
+    font-weight: 600;
+    line-height: 1;
+    margin: 0;
+    color: var(--color-ink);
+  }
+  .page-header__aside {
+    flex: 0 1 auto;
+    min-width: min(100%, 18rem);
+  }
+
+  @media (max-width: 44rem) {
+    .page-header {
+      align-items: stretch;
+    }
+    .page-header__aside {
+      min-width: 100%;
+    }
+  }
+</style>

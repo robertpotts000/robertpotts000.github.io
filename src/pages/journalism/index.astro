@@ -1,0 +1,201 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import PieceCard from '../../components/PieceCard.astro';
+
+const pieces = (await getCollection('pieces', (p) => !p.data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<BaseLayout title="Robert Potts — Journalism" active="journalism" appShell>
+  <section class="journalism" aria-label="Journalism archive">
+    <div class="journalism__header">
+      <div class="journalism__header-inner">
+        <PageHeader title="Journalism">
+          <div slot="aside" class="search">
+            <label for="piece-search" class="visually-hidden">Search pieces by name</label>
+            <input
+              id="piece-search"
+              class="search__input"
+              type="search"
+              placeholder="Search pieces…"
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+        </PageHeader>
+      </div>
+    </div>
+
+    <div class="carousel" id="carousel" tabindex="-1">
+      <ul class="carousel__list" id="carousel-list">
+        {
+          pieces.map((p) => (
+            <PieceCard
+              slug={p.id}
+              headline={p.data.headline}
+              subheading={p.data.subheading}
+              type={p.data.type}
+              date={p.data.date}
+              image={p.data.image}
+            />
+          ))
+        }
+      </ul>
+      <p class="carousel__empty" id="carousel-empty" hidden>No pieces match your search.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .journalism {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+
+  /* Frozen chrome: title + search never scroll. */
+  .journalism__header {
+    flex: 0 0 auto;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-line);
+    z-index: 5;
+  }
+  .journalism__header-inner {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: clamp(1.25rem, 3.5vw, 2.25rem) clamp(1.25rem, 4vw, 3rem) 1.25rem;
+  }
+
+  .search__input {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    color: var(--color-ink);
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    padding: 0.55rem 1.1rem;
+  }
+  .search__input::placeholder {
+    color: var(--color-ink-faint);
+  }
+  .search__input:focus-visible {
+    border-color: var(--color-accent);
+    box-shadow: none;
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
+
+  /* The only scrollable region on the page. */
+  .carousel {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+  }
+  .carousel:focus {
+    outline: none;
+  }
+
+  .carousel__list {
+    list-style: none;
+    margin: 0 auto;
+    max-width: var(--content-max);
+    /* Generous top/bottom padding lets the first and last cards reach centre. */
+    padding: clamp(4rem, 20vh, 11rem) clamp(1.25rem, 4vw, 3rem);
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1.5rem, 4vh, 3rem);
+  }
+
+  .carousel__empty {
+    text-align: center;
+    color: var(--color-ink-soft);
+    font-style: italic;
+    font-size: 1.2rem;
+    padding: 2rem 1rem 4rem;
+  }
+
+  /* Cards hidden by the search filter drop out of the snap flow entirely. */
+  :global(.card.is-hidden) {
+    display: none;
+  }
+
+  /* On phones, relax snapping so ordinary scrolling feels natural. */
+  @media (max-width: 44rem) {
+    .carousel {
+      scroll-snap-type: y proximity;
+    }
+    .carousel__list {
+      padding-block: clamp(2rem, 8vh, 5rem);
+    }
+  }
+</style>
+
+<script>
+  // Focus carousel + name search. No framework — a few DOM listeners.
+  const carousel = document.getElementById('carousel');
+  const input = document.getElementById('piece-search') as HTMLInputElement | null;
+  const emptyEl = document.getElementById('carousel-empty');
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('#carousel-list .card'));
+
+  if (carousel && cards.length) {
+    // Mark the card whose centre is nearest the viewport's centre as "in focus".
+    const evaluateFocus = () => {
+      const box = carousel.getBoundingClientRect();
+      const mid = box.top + box.height / 2;
+      let best: HTMLElement | null = null;
+      let bestDist = Infinity;
+      for (const card of cards) {
+        if (card.classList.contains('is-hidden')) continue;
+        const r = card.getBoundingClientRect();
+        const dist = Math.abs(r.top + r.height / 2 - mid);
+        if (dist < bestDist) {
+          bestDist = dist;
+          best = card;
+        }
+      }
+      for (const card of cards) card.classList.toggle('in-focus', card === best);
+    };
+
+    // Throttle scroll work to one evaluation per animation frame.
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        evaluateFocus();
+        ticking = false;
+      });
+    };
+
+    carousel.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', evaluateFocus);
+
+    // Filter cards by headline; toggle the empty state; re-focus.
+    if (input && emptyEl) {
+      const applySearch = () => {
+        const q = input.value.trim().toLowerCase();
+        let visible = 0;
+        for (const card of cards) {
+          const match = q === '' || (card.dataset.headline ?? '').includes(q);
+          card.classList.toggle('is-hidden', !match);
+          if (match) visible += 1;
+        }
+        emptyEl.hidden = visible !== 0;
+        carousel.scrollTop = 0;
+        evaluateFocus();
+      };
+      input.addEventListener('input', applySearch);
+    }
+
+    // Initial focus (newest piece sits first).
+    evaluateFocus();
+  }
+</script>

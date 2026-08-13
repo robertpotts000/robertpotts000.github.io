@@ -1,0 +1,158 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TagBadge from '../../components/TagBadge.astro';
+
+export async function getStaticPaths() {
+  const pieces = await getCollection('pieces', (p) => !p.data.draft);
+  return pieces.map((piece) => ({
+    params: { slug: piece.id },
+    props: { piece },
+  }));
+}
+
+const { piece } = Astro.props;
+const { headline, subheading, type, date } = piece.data;
+
+// Pull in every converted body fragment at build time and pick this piece's.
+const htmlModules = import.meta.glob('../../pieces/html/*.html', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+const key = Object.keys(htmlModules).find((k) => k.endsWith(`/${piece.id}.html`));
+const body = key ? (htmlModules[key] as string) : '';
+
+const dateFmt = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC', // dates are UTC midnight; pin so they don't shift a day on non-UTC builds
+}).format(date);
+const iso = date.toISOString().slice(0, 10);
+---
+
+<BaseLayout title={`${headline} — Robert Potts`} description={subheading} active="journalism">
+  <article class="page piece">
+    <header class="piece__header">
+      <div class="piece__heading">
+        <p class="piece__eyebrow"><a href="/journalism">← Journalism</a></p>
+        <h1 class="piece__title">{headline}</h1>
+        <p class="piece__subhead">{subheading}</p>
+        <div class="piece__tag"><TagBadge type={type} /></div>
+      </div>
+      <div class="piece__date">
+        <time datetime={iso}>{dateFmt}</time>
+      </div>
+    </header>
+
+    {
+      body ? (
+        <div class="piece__body" set:html={body} />
+      ) : (
+        <p class="placeholder-note">
+          No converted content was found for this piece (expected
+          <code>src/pieces/html/{piece.id}.html</code>). Run <code>npm run convert</code>.
+        </p>
+      )
+    }
+
+    <p class="piece__back"><a href="/journalism">← Back to Journalism</a></p>
+  </article>
+</BaseLayout>
+
+<style>
+  .piece {
+    padding-top: clamp(2rem, 5vw, 3.5rem);
+    padding-bottom: 5rem;
+  }
+  .piece__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem 2.5rem;
+    flex-wrap: wrap;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-line);
+  }
+  .piece__heading {
+    flex: 1 1 22rem;
+    min-width: 0;
+  }
+  .piece__eyebrow {
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+  }
+  .piece__title {
+    font-size: clamp(2.25rem, 6vw, 3.75rem);
+    line-height: 1.02;
+    margin: 0 0 0.5rem;
+  }
+  .piece__subhead {
+    font-size: clamp(1.15rem, 2.6vw, 1.5rem);
+    color: var(--color-ink-soft);
+    line-height: 1.35;
+    margin: 0 0 1rem;
+    max-width: 46rem;
+  }
+  .piece__date {
+    flex: 0 0 auto;
+    font-size: 1.05rem;
+    color: var(--color-ink-soft);
+    font-variant-numeric: oldstyle-nums;
+    padding-top: 0.4rem;
+    white-space: nowrap;
+  }
+
+  /* Long-form reading column. */
+  .piece__body {
+    margin: clamp(2rem, 5vw, 3rem) 0 0;
+    max-width: var(--reading-max);
+    font-size: 1.25rem;
+    line-height: 1.72;
+  }
+
+  /* Injected (set:html) content needs :global to be styled. */
+  .piece__body :global(p) {
+    margin: 0 0 1.4rem;
+  }
+  .piece__body :global(h2) {
+    font-size: clamp(1.6rem, 3.5vw, 2.1rem);
+    margin: 2.4rem 0 0.9rem;
+  }
+  .piece__body :global(blockquote) {
+    margin: 2rem 0;
+    padding: 0.4rem 0 0.4rem 1.5rem;
+    border-left: 3px solid var(--color-accent);
+    font-style: italic;
+    font-size: 1.35rem;
+    color: var(--color-ink);
+  }
+  .piece__body :global(blockquote p) {
+    margin: 0;
+  }
+  .piece__body :global(a) {
+    text-decoration: underline;
+  }
+  .piece__body :global(img) {
+    margin: 2rem 0;
+    border-radius: var(--radius);
+  }
+  .piece__body :global(.piece-note) {
+    font-size: 0.95rem;
+    color: var(--color-ink-faint);
+    border-left: 2px solid var(--color-line);
+    padding-left: 0.9rem;
+    margin-bottom: 2rem;
+  }
+
+  .piece__back {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-line);
+  }
+  .placeholder-note {
+    font-style: italic;
+    color: var(--color-ink-faint);
+  }
+</style>

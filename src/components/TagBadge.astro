@@ -1,0 +1,41 @@
+---
+export type PieceType = 'Article' | 'Blog' | 'Interview' | 'Obituary' | 'Review';
+
+interface Props {
+  type: PieceType;
+}
+const { type } = Astro.props;
+---
+
+<span class:list={['tag', `tag--${type.toLowerCase()}`]}>{type}</span>
+
+<style>
+  .tag {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--tag-text);
+    padding: 0.2rem 0.6rem;
+    border-radius: 999px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+  .tag--article {
+    background: var(--tag-article);
+  }
+  .tag--blog {
+    background: var(--tag-blog);
+  }
+  .tag--interview {
+    background: var(--tag-interview);
+  }
+  .tag--obituary {
+    background: var(--tag-obituary);
+  }
+  .tag--review {
+    background: var(--tag-review);
+  }
+</style>

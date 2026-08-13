@@ -1,0 +1,43 @@
+/* =========================================================================
+   THEME — "Ink & Cream"
+   -------------------------------------------------------------------------
+   This is the single source of truth for the site's look. To re-skin the
+   whole site, change the values here — nothing else needs to be touched.
+   Every colour, font, and tag colour is a CSS custom property.
+   ========================================================================= */
+
+:root {
+  /* ---- Core palette ---------------------------------------------------- */
+  --color-bg: #f4efe2;          /* warm cream "paper" */
+  --color-surface: #fbf8f0;     /* cards / raised surfaces */
+  --color-ink: #211c15;         /* primary text, near-black */
+  --color-ink-soft: #5a5145;    /* secondary text: subheads, meta, captions */
+  --color-ink-faint: #8c8272;   /* faint text: placeholders, disabled */
+  --color-accent: #6e2b2b;      /* muted burgundy — links, active states */
+  --color-accent-soft: #9a4a44; /* hover / lighter accent */
+  --color-line: #ddd3bd;        /* hairline borders, rules */
+
+  /* Scrim used behind frozen headers so scrolling content fades under them */
+  --color-scrim: rgba(244, 239, 226, 0);
+  --color-scrim-solid: #f4efe2;
+
+  /* ---- Typography ------------------------------------------------------ */
+  --font-display: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+  --font-body: 'EB Garamond', Georgia, 'Times New Roman', serif;
+
+  /* ---- Tag colours (one per piece type) -------------------------------- */
+  --tag-text: #f7f2e6;
+  --tag-article: #2e4b3f;    /* deep green */
+  --tag-blog: #3f5570;       /* slate blue */
+  --tag-interview: #7a5230;  /* ochre / tobacco */
+  --tag-obituary: #454049;   /* muted slate-plum */
+  --tag-review: #6e2b2b;     /* burgundy (matches accent) */
+
+  /* ---- Layout / structural tokens -------------------------------------- */
+  --topbar-h: 4.25rem;
+  --content-max: 72rem;
+  --reading-max: 40rem;      /* comfortable measure for long-form prose */
+  --radius: 5px;
+  --shadow-card: 0 14px 34px -18px rgba(33, 28, 21, 0.45);
+  --focus-ring: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent);
+}
