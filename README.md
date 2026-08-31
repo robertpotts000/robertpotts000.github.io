@@ -115,7 +115,15 @@ first, and a single run handles the lot.
    is written), type `cmd`, and press Enter. A black Command Prompt window will open,
    already pointed at the right folder.
 3. Type `claude` and press Enter. This starts Claude Code.
-4. Paste in this prompt:
+4. Type `/add-piece` and press Enter.
+
+   `add-piece` is a set of instructions kept with the site, in
+   `.claude/skills/add-piece/`, telling Claude exactly how this job is done here:
+   the file-name pattern, the document tags, the cover image, checking the site
+   builds, and publishing. You don't need to explain any of it.
+
+   If you'd rather just say it in your own words, that works too — Claude picks up
+   the same instructions from a description of the job. Something like:
 
    ```
    I've added one or more new pieces to the site — the Word documents are
@@ -127,7 +135,8 @@ first, and a single run handles the lot.
    ```
 
 5. Claude will report back once it's done, or ask you a question if anything about
-   the new piece is unclear or missing.
+   the new piece is unclear or missing. When it's finished it'll give you the new
+   piece's web address.
 
 #### Option B — Do it yourself
 
@@ -244,7 +253,8 @@ keep the surrounding `<p>` and `</p>` tags either side of whatever text you writ
 ## Part 4 — The smaller jobs
 
 The quickest route for any of these is to ask Claude (Part 1, Step 5, Option A) and
-say which piece you mean. If you'd rather do it yourself, here's what each one
+say which piece you mean — `/add-piece` covers these jobs as well as adding a new
+piece, so "take the Tom Paulin review down for now" is enough. If you'd rather do it yourself, here's what each one
 involves. They all finish the same way: `npm run build` to check nothing's broken,
 then the three `git` commands at the end of Part 1, Step 5, Option B.
 
