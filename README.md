@@ -1,8 +1,9 @@
 # How to update the site
 
-This is a reference for the two things you'll want to do most often: adding a new
-piece to the Journalism archive, and changing the writing on the About and Editing
-pages. All file paths below are relative to the site's main folder — the one that
+This is a reference for the jobs you'll want to do most often: adding a new piece to
+the Journalism archive, changing the writing on the About and Editing pages, and the
+smaller jobs — taking a piece down, fixing a typo, choosing the featured piece — in
+Part 4. All file paths below are relative to the site's main folder — the one that
 contains this file.
 
 ---
@@ -43,7 +44,10 @@ when. Name the `.docx` file exactly like this, with spaces between each part:
 (e.g. `03` not `3`).
 
 **Title** is whatever you like — it becomes the piece's web address, so it doesn't
-need to match the on-site headline exactly.
+need to match the on-site headline exactly. Try to keep punctuation out of it:
+apostrophes, commas and colons all turn into hyphens in the address (`Kate Bush's`
+becomes `kate-bush-s`), and the address can't be tidied up afterwards without
+breaking any link anyone has to the piece.
 
 **Example** — a review published in the Guardian on 10 March 2001 about John Ashbery:
 `R G 2001 03 10 John Ashbery.docx`
@@ -60,18 +64,28 @@ At the very top of the Word document, each on its own line, add:
 
 If there's nothing to put in `<details>`, write `<details>Null</details>`.
 
-**Important:** all three tags must be present, or the piece cannot be published —
-it'll be left out until the tags are added.
+If the details run to more than one line — a book title, then the author, then the
+price — end each line with **Shift + Enter** rather than Enter. A plain Enter starts
+a new paragraph, and the lines end up run together with no break between them.
+
+**Important:** all three tags must be present, and each needs both of its angle
+brackets in place. A missing `>` just after the tag name (`<headlineThe Uses of
+Difficulty>`) is the usual slip: the piece is then left out until it's fixed, and
+the tag text turns up in the middle of the article instead of the headline.
 
 ### Step 3 — Save the Word document here
 
 `content-src/docx/`
 
-### Step 4 — Add a cover image (optional, but recommended)
+Then **close it in Word**. Word holds on to a document it has open, which can stop
+the next steps from reading it.
 
-If you have a photo or cover image, name it exactly the same as the Word document,
-but swap `.docx` for the image's own file ending (`.jpg`, `.jpeg`, `.png`, `.webp`,
-or `.avif`).
+### Step 4 — Add a cover image
+
+Every piece needs one: it's the picture on the piece's card in the archive, and the
+site has no stand-in for a missing one. Name the image exactly the same as the Word
+document, but swap `.docx` for the image's own file ending (`.jpg`, `.jpeg`, `.png`,
+`.webp` or `.avif`).
 
 **Example** — for `R G 2001 03 10 John Ashbery.docx`, the image would be named:
 `R G 2001 03 10 John Ashbery.jpg`
@@ -80,12 +94,19 @@ Save it here:
 
 `public/images/pieces/`
 
-You can skip this step — the piece can be published without an image and one can be
-added later.
+Step 5 renames it to match the piece's web address for you, so you don't have to.
+Aim for something under about 300 KB — a photo straight off a phone is far bigger
+than the card needs.
+
+You can leave the image until later if you don't have one to hand, but the piece
+stays off the site until it has one. Nothing else you've done is lost: drop the
+image in whenever you're ready and run Step 5 again.
 
 ### Step 5 — Publish it
 
-You have two options here: ask Claude to do it, or do it yourself.
+You have two options here: ask Claude to do it, or do it yourself. Either way you
+can do several pieces in one go — put all the documents and their images in place
+first, and a single run handles the lot.
 
 #### Option A — Ask Claude
 
@@ -97,12 +118,12 @@ You have two options here: ask Claude to do it, or do it yourself.
 4. Paste in this prompt:
 
    ```
-   I've just added a new piece to the site — the Word document is in
-   content-src/docx and (if I added one) its cover image is in
-   public/images/pieces. Please add it: run the conversion, check the
-   headline, subheading, date, type and publication are correct, make
-   sure the cover image is linked correctly, confirm the site builds
-   without errors, then commit and push.
+   I've added one or more new pieces to the site — the Word documents are
+   in content-src/docx and their cover images are in public/images/pieces.
+   Please add them: run the conversion, check the headline, subheading,
+   date, type and publication are right, make sure each cover image is
+   linked correctly, confirm the site builds without errors, then commit
+   and push.
    ```
 
 5. Claude will report back once it's done, or ask you a question if anything about
@@ -111,12 +132,21 @@ You have two options here: ask Claude to do it, or do it yourself.
 #### Option B — Do it yourself
 
 1. Open Command Prompt at the site's main folder (see steps 1–2 under Option A above).
-2. Type `npm run convert` and press Enter. This reads the Word document, writes its
-   body to `src/pieces/html/<slug>.html`, and creates a starter metadata file at
-   `src/data/pieces/<slug>.json` (`<slug>` is generated from the title — the Command
-   Prompt window will print it, e.g. `✓ ... → src/pieces/html/john-ashbery.html`).
-3. Open that new file, `src/data/pieces/<slug>.json`, in a text editor and check it
-   looks like this:
+2. Type `npm run convert` and press Enter. For each document this writes the article
+   text to `src/pieces/html/<slug>.html`, renames your cover image to `<slug>` plus
+   its own file ending, and creates a metadata file at
+   `src/data/pieces/<slug>.json`. (`<slug>` is the piece's web address, made from the
+   title in the file name — the Command Prompt window prints it, e.g.
+   `✓ ... → src/pieces/html/john-ashbery.html`.)
+
+   Read what it prints. A piece is ready when you see
+   `+ wrote src/data/pieces/<slug>.json`. If instead it's listed at the bottom under
+   **"These pieces still need attention"**, that line says exactly what's missing —
+   a file name that doesn't fit the pattern, a missing or malformed tag, or no cover
+   image. Put that right and run `npm run convert` again; it's safe to run as often
+   as you like, and it never overwrites work you've already done.
+3. Open the new `src/data/pieces/<slug>.json` in a text editor and check it looks
+   like this:
 
    ```json
    {
@@ -131,19 +161,21 @@ You have two options here: ask Claude to do it, or do it yourself.
    ```
 
    `headline`, `subheading` and `details` come from the document's tags; `type`,
-   `date` and `publication` come from the file name. Check they're all correct.
-4. If you added a cover image in Step 4, rename it (in `public/images/pieces/`) so
-   it matches `<slug>` exactly, keeping its own file ending — e.g.
-   `the-uses-of-difficulty.jpg` — then make sure the `"image"` line in the JSON
-   file above points to that same name.
-5. Type `npm run build` and press Enter. This checks the whole site still works.
+   `date` and `publication` come from the file name; `image` is your cover image under
+   its new name. Check they're all correct — this is the moment to catch a wrong
+   publication code or a mistyped date.
+
+   From here on it's this file, not the Word document, that the site reads for those
+   details: `npm run convert` will never overwrite it. So to change a headline later,
+   edit it here — see Part 4.
+4. Type `npm run build` and press Enter. This checks the whole site still works.
    Look for `Complete!` near the bottom with no red error text. If you see an
    error, don't publish — fix what it points to and run this step again.
-6. (Optional) Type `npm run preview` and press Enter to view the site locally
+5. (Optional) Type `npm run preview` and press Enter to view the site locally
    before publishing — open the address it prints (something like
    `http://localhost:4321`) in a web browser. Press `Ctrl + C` in the Command
    Prompt window to stop the preview when you're done.
-7. Publish it by typing each of these, pressing Enter after each one:
+6. Publish it by typing each of these, pressing Enter after each one:
 
    ```
    git add -A
@@ -206,3 +238,68 @@ keep the surrounding `<p>` and `</p>` tags either side of whatever text you writ
 (Part 1, Step 5) — either ask Claude, or run `npm run build` to check it, then
 `git add -A`, `git commit -m "Update About page"` (or `"Update Editing page"`), and
 `git push origin HEAD:main` yourself.
+
+---
+
+## Part 4 — The smaller jobs
+
+The quickest route for any of these is to ask Claude (Part 1, Step 5, Option A) and
+say which piece you mean. If you'd rather do it yourself, here's what each one
+involves. They all finish the same way: `npm run build` to check nothing's broken,
+then the three `git` commands at the end of Part 1, Step 5, Option B.
+
+`<slug>` throughout is the piece's web address — the last part of its link, e.g.
+`john-ashbery` for `robertpotts.co.uk/journalism/john-ashbery`.
+
+### Taking a piece down
+
+Open `src/data/pieces/<slug>.json` and add a `"draft"` line as the last one inside
+the curly brackets — putting a comma at the end of the line above it, and no comma
+after `true`:
+
+```json
+{
+  "headline": "The Uses of Difficulty",
+  "subheading": "One sentence that draws the reader in.",
+  "type": "Review",
+  "date": "2026-05-18",
+  "image": "/images/pieces/the-uses-of-difficulty.jpg",
+  "publication": "Guardian",
+  "details": "Null",
+  "draft": true
+}
+```
+
+It disappears from the archive and from the About page. Nothing is deleted — take
+the `"draft"` line out again to put it back, and its web address will still work.
+Don't delete the files themselves.
+
+### Fixing a typo in a piece
+
+Correct it in the Word document in `content-src/docx/`, save, close Word, then run
+`npm run convert`. Don't edit the files in `src/pieces/html/` — they're written
+fresh from the Word document every time, so a fix made there is lost on the next
+run.
+
+### Changing a headline, subheading, date or details after publishing
+
+Edit `src/data/pieces/<slug>.json` directly — that file is what the site reads, and
+`npm run convert` won't touch it again. It's worth correcting the tags in the Word
+document to match, so the two don't disagree if the piece is ever converted afresh.
+
+The one thing not to change here is the piece's web address: that comes from the
+file name and people may already have linked to it.
+
+### Changing which piece is featured on the About page
+
+Add a `"featured": true` line to that piece's `src/data/pieces/<slug>.json` (same
+pattern as `"draft"` above) — and remove it from whichever piece has it now, since
+only one piece can be featured at a time. With none set, the About page shows the
+most recent piece, which is how it currently works.
+
+### Replacing a cover image
+
+Put the new image in `public/images/pieces/` named exactly `<slug>` plus its own
+file ending — e.g. `john-ashbery.jpg` — and delete the old one. If the new file
+ending is different from the old one (`.jpg` where it used to be `.jpeg`), change
+the `"image"` line in `src/data/pieces/<slug>.json` to match.

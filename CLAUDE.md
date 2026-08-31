@@ -1,79 +1,91 @@
 # CLAUDE.md
 
-Guidance for Claude Code working in this repo.
+Robert Potts's portfolio site — an Astro static site (About, Editing, and a
+Journalism archive) published to GitHub Pages at robertpotts.co.uk.
 
-## Adding a piece
+Two other documents carry the detail, and this file deliberately doesn't repeat
+them:
 
-Use the `add-piece` skill (`.claude/skills/add-piece/`) for the full workflow —
-filename convention, tag extraction, metadata schema, thumbnail rules, build
-verification, commit/push. `README.md` is Robert's own plain-language version
-of the same process. Don't duplicate that guidance here; this file only holds
-gotchas discovered in practice that aren't (yet) written into the skill.
+- **`.claude/skills/add-piece/`** — the publishing workflow (filenames, document
+  tags, cover images, metadata, build, commit, push). Use the skill for any job
+  that touches the archive.
+- **`README.md`** — Robert's own plain-language version of the same jobs, written
+  for him to follow without Claude. If a step changes, both need updating.
 
-## Pushing
+Everything below is what doesn't fit in either: how Robert wants to be worked
+with, and the things about this repo that have actually caused mistakes.
 
-The local branch is `master` but tracks `origin/main` — plain `git push` fails
-with an upstream-mismatch error. Push explicitly:
+## Working with Robert
+
+These are settled preferences, learned in practice. Follow them without being
+asked.
+
+- **He's a writer and editor, not a developer.** Explain in plain language, name
+  files by their full path, and describe actions the way they appear on screen
+  (File Explorer, Command Prompt) rather than assuming a dev toolchain. Anything
+  written *for* him — README, reports, questions — should read that way too.
+- **The words on the site are his.** Headlines, subheadings, biography, the text
+  of a piece: never invent, paraphrase or "improve" them. If something is
+  missing, ask. You may offer a draft only when it's clearly labelled a
+  suggestion, and only use it if he says yes.
+- **Ask for everything missing in one message.** Not one question at a time.
+- **The source document is the source of truth.** Metadata comes from the
+  `.docx` filename and the tags inside the document; body text comes from the
+  document. Fix problems there, never in generated output
+  (`src/pieces/html/*.html`) — a re-run of `npm run convert` wipes such edits and
+  the original fault resurfaces.
+- **Finish the job.** A piece isn't added until the build passes and the change
+  is pushed; he expects the live URL back, not a handoff. The one hard stop is a
+  failing build — never push one, and say plainly what broke.
+- **Don't add what he didn't ask for.** `details` and `publication` are stored
+  but deliberately not rendered anywhere; the About and Editing pages still carry
+  placeholder copy he intends to write himself. Leave all of it alone unless he
+  raises it. No new fields, pages, or markup on your own initiative.
+- **Stage explicit paths — never `git add -A`.** (His own README tells *him* to
+  use `git add -A`, which is fine for him; that asymmetry is intentional, don't
+  "fix" it.)
+
+## Repo facts that bite
+
+**Push target.** The local branch is `master` but tracks `origin/main`, so plain
+`git push` fails with an upstream mismatch. Always:
 
 ```
 git push origin HEAD:main
 ```
 
-## `<details>Null</details>` is not an error
+**`<details>Null</details>` is not an error.** The literal string `"Null"` in a
+piece's `<details>` tag or its JSON `"details"` field is his documented
+convention for "no details" (see `README.md`) and nearly every piece uses it.
+Don't flag it and don't try to make it empty or omitted.
 
-If a piece's `<details>` tag (or the JSON's `"details"` field) is the literal
-string `"Null"`, that's Robert's documented convention for "no details" (see
-`README.md`) — every existing piece uses it. Don't flag it, don't try to make
-it empty/omitted instead.
+**Files on disk are CRLF.** `core.autocrlf=true`, no `.gitattributes`, so the
+repo stores LF and checks out CRLF. A multi-line string match against a file read
+from disk will silently fail: normalise to LF before matching, and write back
+CRLF (or rewrite the whole file in LF — just don't leave one file mixed).
 
-## Malformed `<headline>`/`<subheading>` tags
+**Windows, OneDrive, Word.** No `python3` — script in Node. Word leaves `~$…docx`
+lock files (the converter skips them) and holds the real file open, so writing to
+a `.docx` you just read can fail with `EBUSY`; write to a new filename and move it
+over. `mammoth` is the docx→HTML converter, `jszip` is available for raw
+docx/zip surgery.
 
-If `npm run convert` reports a piece is missing `headline` or `subheading`
-even though the document visibly has `<headline>...</headline>` /
-`<subheading>...</subheading>` text at the top, check for a typo before asking
-Robert to redo it by hand — the most common one is a missing `>` right after
-the opening tag name (e.g. `<headlineSome Title></headline>`). The extractor
-in `scripts/convert-docs.mjs` matches the literal string `<headline>`, so a
-missing bracket means the tag isn't recognised, gets left in place, and leaks
-into the article body as garbled escaped text (`&lt;headlineSome Title...`).
+**A tag the converter says is missing is usually a typo.** Most often a dropped
+`>` after the opening tag name (`<headlineSome Title>`), which leaks into the
+body as escaped text. Diagnosis and the full repair procedure — including
+patching a `.docx` without Word — is in
+`.claude/skills/add-piece/reference/docx-repair.md`. Check for the typo before
+asking him to redo anything by hand.
 
-**Fix it in the source `.docx`, never in the generated `src/pieces/html/*.html`
-or by hand-writing the JSON** — a re-run of `npm run convert` would silently
-wipe a hand-edit of the generated files, and the same typo would resurface if
-the doc is ever reconverted.
+## Keeping this current
 
-To patch a `.docx` (it's a zip of XML) when Word isn't available in-session:
+When Robert corrects you or states a preference, write it down before the session
+ends:
 
-1. Unzip it (`unzip` via Bash, or `Expand-Archive` in PowerShell) to a scratch
-   folder.
-2. Find the malformed run in `word/document.xml` — Word usually splits a
-   run-on phrase like `<headlineThrough the oval window>` across several
-   `<w:r><w:t>...</w:t></w:r>` elements (spell-check often wraps the
-   concatenated word in `<w:proofErr>` tags). Insert or move a `&gt;` run so
-   the encoded text reads exactly `&lt;headline&gt;...&lt;/headline&gt;` —
-   check the *whole* tag, not just the opening: a doc can have a stray extra
-   `&gt;` near the closing tag as well as a missing one at the opening.
-3. Rebuild the archive with the `jszip` package (already in
-   `node_modules`) — **not** PowerShell's `Compress-Archive`, which produces a
-   zip that mammoth rejects with `Could not find main document part`. A
-   minimal rebuild:
+- a preference about *how* to work → a bullet under **Working with Robert**
+- a repo behaviour that caused a mistake → **Repo facts that bite**
+- a change to the publishing steps → `.claude/skills/add-piece/SKILL.md`, and
+  `README.md` too if it changes anything he does by hand
 
-   ```js
-   const JSZip = require('jszip');
-   // read every file under the unzipped folder, zip.file(relPath, buffer),
-   // then zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' })
-   ```
-
-4. Write the rebuilt file to a **new** filename first, then move it over the
-   original — writing straight back to the original path can hit `EBUSY`
-   (OneDrive file lock) if it was just read.
-5. Delete any stale `src/data/pieces/<slug>.json` the converter wrote before
-   the fix (it won't overwrite an existing metadata file), then re-run
-   `npm run convert`.
-6. There's no `python3` in this environment — do XML/zip work in Node.
-
-## Environment
-
-- No `python3` available (Windows, no Python install). Use Node for scripting.
-- `mammoth` is the docx→HTML converter (`npm run convert` /
-  `scripts/convert-docs.mjs`); `jszip` is available for raw docx/zip surgery.
+Keep this file short enough that it's always worth reading in full; long
+procedures belong in the skill's `reference/` folder.
