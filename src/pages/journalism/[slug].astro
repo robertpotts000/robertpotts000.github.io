@@ -12,7 +12,9 @@ export async function getStaticPaths() {
 }
 
 const { piece } = Astro.props;
-const { headline, subheading, type, date } = piece.data;
+const { headline, subheading, type, date, image, details } = piece.data;
+const detailLines =
+  details && details !== 'Null' ? details.split('\n').filter((line) => line.trim()) : [];
 
 // Pull in every converted body fragment at build time and pick this piece's.
 const htmlModules = import.meta.glob('../../pieces/html/*.html', {
@@ -46,16 +48,31 @@ const iso = date.toISOString().slice(0, 10);
       </div>
     </header>
 
-    {
-      body ? (
-        <div class="piece__body" set:html={body} />
-      ) : (
-        <p class="placeholder-note">
-          No converted content was found for this piece (expected
-          <code>src/pieces/html/{piece.id}.html</code>). Run <code>npm run convert</code>.
-        </p>
-      )
-    }
+    <div class="piece__content">
+      {
+        body ? (
+          <div class="piece__body" set:html={body} />
+        ) : (
+          <p class="placeholder-note">
+            No converted content was found for this piece (expected
+            <code>src/pieces/html/{piece.id}.html</code>). Run <code>npm run convert</code>.
+          </p>
+        )
+      }
+
+      <aside class="piece__aside">
+        <img class="piece__cover" src={image} alt="" />
+        {
+          detailLines.length > 0 && (
+            <div class="piece__details">
+              {detailLines.map((line) => (
+                <p>{line}</p>
+              ))}
+            </div>
+          )
+        }
+      </aside>
+    </div>
 
     <p class="piece__back"><a href="/journalism">← Back to Journalism</a></p>
   </article>
@@ -104,12 +121,41 @@ const iso = date.toISOString().slice(0, 10);
     white-space: nowrap;
   }
 
+  /* Body column + cover/details sidebar. */
+  .piece__content {
+    margin-top: clamp(2rem, 5vw, 3rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(11rem, 15rem);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+  }
+
   /* Long-form reading column. */
   .piece__body {
-    margin: clamp(2rem, 5vw, 3rem) 0 0;
+    margin: 0;
     max-width: var(--reading-max);
     font-size: 1.25rem;
     line-height: 1.72;
+  }
+
+  .piece__aside {
+    position: sticky;
+    top: calc(var(--topbar-h) + 1.5rem);
+  }
+  .piece__cover {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+  }
+  .piece__details {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+    color: var(--color-ink-soft);
+    line-height: 1.5;
+  }
+  .piece__details p {
+    margin: 0 0 0.25em;
   }
 
   /* Injected (set:html) content needs :global to be styled. */
@@ -154,5 +200,16 @@ const iso = date.toISOString().slice(0, 10);
   .placeholder-note {
     font-style: italic;
     color: var(--color-ink-faint);
+  }
+
+  @media (max-width: 42rem) {
+    .piece__content {
+      grid-template-columns: 1fr;
+    }
+    .piece__aside {
+      position: static;
+      order: -1;
+      max-width: 12rem;
+    }
   }
 </style>
