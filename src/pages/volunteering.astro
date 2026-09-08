@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+---
+
+<BaseLayout title="Robert Potts — Volunteering" active="volunteering">
+  <div class="page volunteering">
+    <PageHeader title="Volunteering" />
+
+    <div class="volunteering__body">
+      <p class="placeholder-note">
+        Placeholder text — Robert will write about his volunteering work here.
+      </p>
+      <p>
+        [Add your volunteering text here.]
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .volunteering {
+    padding-top: clamp(2rem, 6vw, 4rem);
+    padding-bottom: 5rem;
+  }
+  .volunteering__body {
+    margin-top: clamp(1.5rem, 4vw, 2.75rem);
+    max-width: var(--reading-max);
+    font-size: 1.2rem;
+  }
+  .placeholder-note {
+    font-style: italic;
+    color: var(--color-ink-faint);
+    font-size: 1rem;
+  }
+</style>
