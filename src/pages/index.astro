@@ -1,7 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PageHeader from '../components/PageHeader.astro';
 import PieceCard from '../components/PieceCard.astro';
 
 const SUBSTACK_URL = 'https://robertpotts.substack.com/home';
@@ -16,13 +15,8 @@ const hero = pieces.find((p) => p.data.featured) ?? pieces[0];
 
 <BaseLayout title="Robert Potts — About" active="about">
   <div class="page about">
-    <PageHeader title="About Me" />
-
     <div class="about__grid">
       <section class="about__bio" aria-label="About Robert Potts">
-        <p class="placeholder-note">
-          Placeholder biography — Robert will replace the text below.
-        </p>
         <p>
          I am a writer, critic, editor and manager. I was until 2025 the Deputy Editor of The Times Literary Supplement, and am a former editor of Poetry Review. I have written for many national broadsheets and magazines, including the Guardian, the Observer, The Times, the Sunday Times, the Daily Telegraph, the Independent, the Spectator, the New Statesman, the LRB, and the TLS. My output includes interviews, obituaries, essays, articles, blog posts and reviews, and examples can be found  <a href="/journalism">here</a>.
         </p>
@@ -98,12 +92,6 @@ const hero = pieces.find((p) => p.data.featured) ?? pieces[0];
     color: var(--color-ink-soft);
     margin: 0 0 0.85rem;
   }
-  .placeholder-note {
-    font-style: italic;
-    color: var(--color-ink-faint);
-    font-size: 1rem;
-  }
-
   @media (max-width: 52rem) {
     .about__grid {
       grid-template-columns: 1fr;
