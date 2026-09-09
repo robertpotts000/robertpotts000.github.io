@@ -11,7 +11,9 @@
 // the URL and the join key to the piece's metadata. A <headline>, <subheading> and
 // optional <details> tag at the very top of the document (each its own paragraph)
 // supply the rest of the required metadata and are stripped from the body before
-// it is written out.
+// it is written out. An optional <category> tag holds a comma-separated list
+// (e.g. "pop, guardian") for future curated pages — not required, not yet
+// rendered anywhere.
 //
 // The cover image is picked up from public/images/pieces/, where it can be named
 // either after the .docx ("R G 2001 03 10 John Ashbery.jpg") or after the slug
@@ -234,6 +236,14 @@ async function main() {
     html = subheading.html;
     const details = extractTag(html, 'details');
     html = details.html;
+    const category = extractTag(html, 'category');
+    html = category.html;
+    const categories = category.value
+      ? category.value
+          .split(',')
+          .map((c) => c.trim().toLowerCase())
+          .filter(Boolean)
+      : [];
 
     await fs.writeFile(path.join(HTML_DIR, `${slug}.html`), `${html.trim()}\n`, 'utf8');
 
@@ -283,6 +293,7 @@ async function main() {
         publication: parsed.publication,
       };
       if (details.value) meta.details = details.value;
+      if (categories.length) meta.categories = categories;
 
       await fs.writeFile(metaPath, `${JSON.stringify(meta, null, 2)}\n`, 'utf8');
       console.log(

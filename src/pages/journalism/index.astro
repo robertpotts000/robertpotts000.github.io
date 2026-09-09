@@ -38,7 +38,7 @@ const pieces = (await getCollection('pieces', (p) => !p.data.draft)).sort(
               headline={p.data.headline}
               subheading={p.data.subheading}
               type={p.data.type}
-              date={p.data.date}
+              publication={p.data.publication}
               image={p.data.image}
             />
           ))

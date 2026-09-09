@@ -6,23 +6,17 @@ interface Props {
   headline: string;
   subheading: string;
   type: PieceType;
-  date: Date;
+  publication?: string;
   image: string;
   /** When true, render as a large standalone "hero" card (About page). */
   hero?: boolean;
   /** Element tag: <li> inside the carousel, <div> when standalone. */
   as?: 'li' | 'div';
 }
-const { slug, headline, subheading, type, date, image, hero = false, as = 'li' } = Astro.props;
+const { slug, headline, subheading, type, publication, image, hero = false, as = 'li' } =
+  Astro.props;
 
 const Wrapper = as;
-const dateFmt = new Intl.DateTimeFormat('en-GB', {
-  day: 'numeric',
-  month: 'long',
-  year: 'numeric',
-  timeZone: 'UTC', // dates are UTC midnight; pin so they don't shift a day on non-UTC builds
-}).format(date);
-const iso = date.toISOString().slice(0, 10);
 ---
 
 <Wrapper class:list={['card', { 'card--hero': hero }]} data-headline={headline.toLowerCase()}>
@@ -35,7 +29,7 @@ const iso = date.toISOString().slice(0, 10);
       <p class="card__subhead">{subheading}</p>
       <div class="card__footer">
         <TagBadge type={type} />
-        <time class="card__date" datetime={iso}>{dateFmt}</time>
+        {publication && <span class="card__publication">{publication}</span>}
       </div>
     </div>
   </a>
@@ -112,10 +106,9 @@ const iso = date.toISOString().slice(0, 10);
     gap: 1rem;
     flex-wrap: wrap;
   }
-  .card__date {
+  .card__publication {
     font-size: 0.95rem;
     color: var(--color-ink-soft);
-    font-variant-numeric: oldstyle-nums;
     white-space: nowrap;
   }
 

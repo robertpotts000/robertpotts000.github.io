@@ -26,6 +26,8 @@ const pieces = defineCollection({
     publication: z.string().optional(),
     /** Extra context (e.g. book/publisher details) from the doc's <details> tag. Not yet shown on the site. */
     details: z.string().optional(),
+    /** Curated-page groupings (e.g. "pop", "guardian", "censorship"); a piece may carry several. Not yet used on the site. */
+    categories: z.array(z.string()).optional().default([]),
   }),
 });
 

@@ -25,6 +25,7 @@ Work in order. Never push a build that failed.
 | `type`, `date`, `publication` | The filename | Fix the filename (§2). |
 | Cover image | An image file Robert drops in `public/images/pieces/` | **Ask him for one and stop.** There is no placeholder — see §5. |
 | `details` | `<details>` tag in the doc | Optional. Genuinely fine to omit. |
+| `categories` | `<category>` tag in the doc | Optional. For future curated pages — see §3. |
 
 Never write the headline, subheading, date, type or publication from your own
 inference. He is a critic and an editor; the words on his site are his.
@@ -89,10 +90,20 @@ At the top of the document, each on its own paragraph:
 <headline>The headline as it should appear on the site</headline>
 <subheading>One sentence that draws the reader in</subheading>
 <details>Book, author, extent, publisher, price</details>
+<category>pop, guardian</category>
 ```
 
 The converter finds these anywhere in the document, strips them from the body so
 they never render, and seeds the metadata with them.
+
+- **`<category>` is optional and forward-looking.** It's housekeeping for
+  curated pages Robert hasn't built yet (see the site's git history / recent
+  conversation for the plan) — a comma-separated list, lowercased and trimmed
+  into the `categories` array, e.g. `<category>pop, guardian</category>` →
+  `["pop", "guardian"]`. A piece can carry several. Leave it off entirely if
+  Robert doesn't mention it — don't invent categories on his behalf, and don't
+  ask him to backfill it on old pieces unprompted. Like `details` and
+  `publication`, it's stored but **not yet rendered anywhere** on the site.
 
 - **`<details>Null</details>` is not an error.** It's Robert's documented
   convention for "nothing to put here" and nearly every piece uses it. Leave it
@@ -181,9 +192,9 @@ Don't second-guess a correct auto-fill, but this is the moment to catch a wrong
 publication code or a transposed date — cheaper now than after publishing.
 
 - `image` is a web path with a leading slash, resolved from `public/`.
-- `details` and `publication` are stored but **deliberately not rendered
-  anywhere** on the site. Leave them; don't add display markup unless separately
-  asked.
+- `details`, `publication` and `categories` are stored but **deliberately not
+  rendered anywhere** on the site. Leave them; don't add display markup unless
+  separately asked.
 - `featured` and `draft` are optional booleans — omit them when false.
 - Extra information with no field (a strapline, a co-author) is not a new JSON
   key: the schema will reject it and the build will fail. Say it would need a
@@ -251,9 +262,10 @@ Briefly:
 - **Fix a typo in a piece:** correct the source `.docx`, re-run `npm run
   convert`, build, commit, push. Never hand-edit `src/pieces/html/` — the next
   conversion silently wipes it.
-- **Change a headline, subheading, date or details after publishing:** edit
-  `src/data/pieces/<slug>.json` directly (the converter won't touch it again).
-  Where the doc's tags are also wrong, fix them too so a future re-seed is right.
+- **Change a headline, subheading, date, details or categories after
+  publishing:** edit `src/data/pieces/<slug>.json` directly (the converter
+  won't touch it again). Where the doc's tags are also wrong, fix them too so a
+  future re-seed is right.
 - **Replace a cover image:** drop the new file in `public/images/pieces/` named
   `<slug>.<ext>`, delete the old one if the extension changed, and update
   `"image"` in the JSON to match.
@@ -269,5 +281,6 @@ Briefly:
 - Push a failed build. `git add -A`. `git push --force`.
 - Add JSON keys that aren't in `src/content.config.ts`.
 - Hand-edit anything in `src/pieces/html/`.
-- Add display markup for `details` or `publication` — intentionally not shown.
+- Add display markup for `details`, `publication` or `categories` — intentionally
+  not shown.
 - Report success for a step that didn't actually run.

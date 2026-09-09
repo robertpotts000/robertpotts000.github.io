@@ -52,7 +52,7 @@ breaking any link anyone has to the piece.
 **Example** — a review published in the Guardian on 10 March 2001 about John Ashbery:
 `R G 2001 03 10 John Ashbery.docx`
 
-### Step 2 — Add three tags to the top of the document
+### Step 2 — Add tags to the top of the document
 
 At the very top of the Word document, each on its own line, add:
 
@@ -68,10 +68,24 @@ If the details run to more than one line — a book title, then the author, then
 price — end each line with **Shift + Enter** rather than Enter. A plain Enter starts
 a new paragraph, and the lines end up run together with no break between them.
 
-**Important:** all three tags must be present, and each needs both of its angle
-brackets in place. A missing `>` just after the tag name (`<headlineThe Uses of
-Difficulty>`) is the usual slip: the piece is then left out until it's fixed, and
-the tag text turns up in the middle of the article instead of the headline.
+**Important:** all three tags above must be present, and each needs both of its
+angle brackets in place. A missing `>` just after the tag name (`<headlineThe
+Uses of Difficulty>`) is the usual slip: the piece is then left out until it's
+fixed, and the tag text turns up in the middle of the article instead of the
+headline.
+
+**Optional — a fourth tag for future use.** If you want to start sorting pieces
+into groups now (for curated pages we haven't built yet — e.g. "pop lyrics",
+"Guardian pieces", "censorship"), add a fourth tag with one or more group names,
+separated by commas:
+
+```
+<category>pop, guardian</category>
+```
+
+This is entirely optional, housekeeping only — nothing on the site uses it yet,
+and leaving it off costs you nothing later, you can always add it (or edit it)
+in the piece's file afterwards.
 
 ### Step 3 — Save the Word document here
 
@@ -172,7 +186,8 @@ first, and a single run handles the lot.
    `headline`, `subheading` and `details` come from the document's tags; `type`,
    `date` and `publication` come from the file name; `image` is your cover image under
    its new name. Check they're all correct — this is the moment to catch a wrong
-   publication code or a mistyped date.
+   publication code or a mistyped date. If you added the optional `<category>` tag,
+   you'll also see a `"categories"` line listing what you typed there.
 
    From here on it's this file, not the Word document, that the site reads for those
    details: `npm run convert` will never overwrite it. So to change a headline later,
@@ -291,7 +306,7 @@ Correct it in the Word document in `content-src/docx/`, save, close Word, then r
 fresh from the Word document every time, so a fix made there is lost on the next
 run.
 
-### Changing a headline, subheading, date or details after publishing
+### Changing a headline, subheading, date, details or categories after publishing
 
 Edit `src/data/pieces/<slug>.json` directly — that file is what the site reads, and
 `npm run convert` won't touch it again. It's worth correcting the tags in the Word
