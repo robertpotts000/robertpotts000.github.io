@@ -7,29 +7,51 @@ interface Props {
   subheading: string;
   type: PieceType;
   publication?: string;
+  /** Only rendered on the hero card — the general archive intentionally omits the date. */
+  date?: Date;
   image: string;
   /** When true, render as a large standalone "hero" card (About page). */
   hero?: boolean;
   /** Element tag: <li> inside the carousel, <div> when standalone. */
   as?: 'li' | 'div';
 }
-const { slug, headline, subheading, type, publication, image, hero = false, as = 'li' } =
+const { slug, headline, subheading, type, publication, date, image, hero = false, as = 'li' } =
   Astro.props;
 
 const Wrapper = as;
+const dateFmt =
+  hero && date
+    ? new Intl.DateTimeFormat('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        timeZone: 'UTC', // dates are UTC midnight; pin so they don't shift a day on non-UTC builds
+      }).format(date)
+    : undefined;
+const iso = hero && date ? date.toISOString().slice(0, 10) : undefined;
 ---
 
 <Wrapper class:list={['card', { 'card--hero': hero }]} data-headline={headline.toLowerCase()}>
   <a class="card__link" href={`/journalism/${slug}`}>
     <div class="card__media">
-      <img src={image} alt="" loading="lazy" decoding="async" width="200" height="200" />
+      <img
+        src={image}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        width={hero ? undefined : 200}
+        height={hero ? undefined : 200}
+      />
     </div>
     <div class="card__body">
       <h2 class="card__headline">{headline}</h2>
       <p class="card__subhead">{subheading}</p>
       <div class="card__footer">
         <TagBadge type={type} />
-        {publication && <span class="card__publication">{publication}</span>}
+        <span class="card__meta">
+          {publication && <span class="card__publication">{publication}</span>}
+          {dateFmt && iso && <time class="card__date" datetime={iso}>{dateFmt}</time>}
+        </span>
       </div>
     </div>
   </a>
@@ -106,10 +128,19 @@ const Wrapper = as;
     gap: 1rem;
     flex-wrap: wrap;
   }
-  .card__publication {
+  .card__meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .card__publication,
+  .card__date {
     font-size: 0.95rem;
     color: var(--color-ink-soft);
     white-space: nowrap;
+  }
+  .card__date {
+    font-variant-numeric: oldstyle-nums;
   }
 
   /* Hero variant used on the About page — always in focus, larger presence. */
@@ -120,6 +151,11 @@ const Wrapper = as;
   }
   .card--hero .card__link {
     box-shadow: var(--shadow-card);
+  }
+  /* Show the whole image at a fixed width rather than cropping it square. */
+  .card--hero .card__media img {
+    width: clamp(180px, 26vw, 280px);
+    height: auto;
   }
 
   /* Stack image above text on narrow screens. */
