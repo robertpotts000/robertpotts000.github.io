@@ -39,6 +39,7 @@ when. Name the `.docx` file exactly like this, with spaces between each part:
 | LRB | LRB |
 | NS | New Statesman |
 | O | Observer |
+| IoS | Independent on Sunday |
 
 **Year, Month, Day** are numbers — Year as 4 digits, Month and Day as 2 digits each
 (e.g. `03` not `3`).

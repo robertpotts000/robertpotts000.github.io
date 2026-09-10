@@ -53,6 +53,7 @@ const PUBLICATION_BY_CODE = {
   LRB: 'LRB',
   NS: 'New Statesman',
   O: 'Observer',
+  IOS: 'Independent on Sunday',
 };
 
 function slugifyText(text) {

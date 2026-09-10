@@ -62,7 +62,7 @@ e.g. `R G 2001 03 10 John Ashbery.docx` → Review / Guardian / 2001-03-10 / slu
 | Token | Values |
 |---|---|
 | Type letter | `A` Article, `B` Blog, `I` Interview, `O` Obituary, `R` Review |
-| Publication code | `TLS`, `G` Guardian, `T` Times, `S` Spectator, `DT` Daily Telegraph, `LRB`, `NS` New Statesman, `O` Observer |
+| Publication code | `TLS`, `G` Guardian, `T` Times, `S` Spectator, `DT` Daily Telegraph, `LRB`, `NS` New Statesman, `O` Observer, `IoS` Independent on Sunday |
 | Date | `YYYY` `MM` `DD` as three separate tokens, zero-padded, a real calendar date |
 | Title | Everything after the date. Becomes the slug. Needn't match the headline. |
 
