@@ -5,5 +5,8 @@
   "date": "2018-07-27",
   "image": "/images/pieces/kate-bush-s-wuthering-heights-revisited.jpeg",
   "publication": "TLS",
-  "details": "Null"
+  "details": "Null",
+  "categories": [
+    "music"
+  ]
 }
