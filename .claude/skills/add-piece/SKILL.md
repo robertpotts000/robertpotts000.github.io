@@ -96,14 +96,16 @@ At the top of the document, each on its own paragraph:
 The converter finds these anywhere in the document, strips them from the body so
 they never render, and seeds the metadata with them.
 
-- **`<category>` is optional and forward-looking.** It's housekeeping for
-  curated pages Robert hasn't built yet (see the site's git history / recent
-  conversation for the plan) — a comma-separated list, lowercased and trimmed
+- **`<category>` is optional.** A comma-separated list, lowercased and trimmed
   into the `categories` array, e.g. `<category>pop, guardian</category>` →
   `["pop", "guardian"]`. A piece can carry several. Leave it off entirely if
   Robert doesn't mention it — don't invent categories on his behalf, and don't
-  ask him to backfill it on old pieces unprompted. Like `details` and
-  `publication`, it's stored but **not yet rendered anywhere** on the site.
+  ask him to backfill it on old pieces unprompted. Two values are live:
+  `"music"` and `"interviews"` drive `/journalism/music` and
+  `/journalism/interviews` (`src/pages/journalism/music.astro` and
+  `interviews.astro`, filtering on `categories.includes(...)`). Any other
+  value is stored but not yet rendered anywhere — same as `details` and
+  `publication`.
 
 - **`<details>Null</details>` is not an error.** It's Robert's documented
   convention for "nothing to put here" and nearly every piece uses it. Leave it
@@ -192,9 +194,11 @@ Don't second-guess a correct auto-fill, but this is the moment to catch a wrong
 publication code or a transposed date — cheaper now than after publishing.
 
 - `image` is a web path with a leading slash, resolved from `public/`.
-- `details`, `publication` and `categories` are stored but **deliberately not
-  rendered anywhere** on the site. Leave them; don't add display markup unless
-  separately asked.
+- `details` and `publication` are stored but **deliberately not rendered
+  anywhere** on the site. Leave them; don't add display markup unless
+  separately asked. `categories` is the exception: `"music"` and
+  `"interviews"` feed the `/journalism/music` and `/journalism/interviews`
+  pages (see §3) — any other category value is still unused.
 - `featured` and `draft` are optional booleans — omit them when false.
 - Extra information with no field (a strapline, a co-author) is not a new JSON
   key: the schema will reject it and the build will fail. Say it would need a
@@ -271,6 +275,9 @@ Briefly:
   `"image"` in the JSON to match.
 - **Change the look:** everything visual is in `src/styles/tokens.css`. Separate
   job from adding a piece.
+- **A piece belongs on Music or Interviews:** add `"music"` or `"interviews"`
+  to its `categories` array (§3) — it'll pick up automatically on
+  `/journalism/music` or `/journalism/interviews`. No other step needed.
 
 ## Never
 
@@ -281,6 +288,6 @@ Briefly:
 - Push a failed build. `git add -A`. `git push --force`.
 - Add JSON keys that aren't in `src/content.config.ts`.
 - Hand-edit anything in `src/pieces/html/`.
-- Add display markup for `details`, `publication` or `categories` — intentionally
-  not shown.
+- Add display markup for `details` or `publication` — intentionally not shown.
+  (`categories` is the one exception — see §3.)
 - Report success for a step that didn't actually run.

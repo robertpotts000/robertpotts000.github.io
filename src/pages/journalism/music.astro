@@ -1,0 +1,13 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PieceCarousel from '../../components/PieceCarousel.astro';
+
+const pieces = (
+  await getCollection('pieces', (p) => !p.data.draft && p.data.categories.includes('music'))
+).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Robert Potts — Music" active="journalism" appShell>
+  <PieceCarousel title="Music" pieces={pieces} ariaLabel="Music pieces" />
+</BaseLayout>
