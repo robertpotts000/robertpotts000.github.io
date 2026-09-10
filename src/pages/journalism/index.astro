@@ -1,16 +1,20 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PieceCarousel from '../../components/PieceCarousel.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import PieceCard from '../../components/PieceCard.astro';
 
 const pieces = (await getCollection('pieces', (p) => !p.data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
+const recent = pieces.slice(0, 4);
 ---
 
-<BaseLayout title="Robert Potts — Journalism" active="journalism" appShell>
-  <PieceCarousel title="Journalism" pieces={pieces} ariaLabel="Journalism archive">
-    <Fragment slot="intro">
+<BaseLayout title="Robert Potts — Journalism" active="journalism">
+  <div class="page journalism-landing">
+    <PageHeader title="Journalism" />
+
+    <div class="journalism-landing__intro">
       <p>
         Over the years, I have written for nearly all the British broadsheets, and a number of
         magazines - the Guardian, The Times, the Sunday Times, the Independent on Sunday, the
@@ -31,6 +35,58 @@ const pieces = (await getCollection('pieces', (p) => !p.data.draft)).sort(
         The uploading of these pieces is a work in progress, but I hope that whatever brought you
         here, there will be something for you to enjoy.
       </p>
-    </Fragment>
-  </PieceCarousel>
+    </div>
+
+    <div class="journalism-landing__recent" aria-label="Recent pieces">
+      {
+        recent.map((p) => (
+          <PieceCard
+            as="div"
+            focused
+            slug={p.id}
+            headline={p.data.headline}
+            subheading={p.data.subheading}
+            type={p.data.type}
+            publication={p.data.publication}
+            image={p.data.image}
+          />
+        ))
+      }
+    </div>
+  </div>
 </BaseLayout>
+
+<style>
+  .journalism-landing {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: clamp(2rem, 6vw, 4rem) clamp(1.25rem, 4vw, 3rem) 5rem;
+  }
+
+  .journalism-landing__intro {
+    max-width: var(--reading-max);
+    margin-top: clamp(1.5rem, 4vw, 2.25rem);
+    font-size: 1.2rem;
+    line-height: 1.55;
+    color: var(--color-ink-soft);
+  }
+  .journalism-landing__intro p {
+    margin: 0 0 1.1em;
+  }
+  .journalism-landing__intro p:last-child {
+    margin-bottom: 0;
+  }
+
+  .journalism-landing__recent {
+    margin-top: clamp(2.5rem, 6vw, 4rem);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  @media (max-width: 52rem) {
+    .journalism-landing__recent {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

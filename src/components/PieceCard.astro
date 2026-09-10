@@ -12,11 +12,24 @@ interface Props {
   image: string;
   /** When true, render as a large standalone "hero" card (About page). */
   hero?: boolean;
+  /** Card starts fully visible instead of dimmed — for use outside the
+   * carousel, where there's no scroll script to bring it "in focus". */
+  focused?: boolean;
   /** Element tag: <li> inside the carousel, <div> when standalone. */
   as?: 'li' | 'div';
 }
-const { slug, headline, subheading, type, publication, date, image, hero = false, as = 'li' } =
-  Astro.props;
+const {
+  slug,
+  headline,
+  subheading,
+  type,
+  publication,
+  date,
+  image,
+  hero = false,
+  focused = false,
+  as = 'li',
+} = Astro.props;
 
 const Wrapper = as;
 const dateFmt =
@@ -31,7 +44,10 @@ const dateFmt =
 const iso = hero && date ? date.toISOString().slice(0, 10) : undefined;
 ---
 
-<Wrapper class:list={['card', { 'card--hero': hero }]} data-headline={headline.toLowerCase()}>
+<Wrapper
+  class:list={['card', { 'card--hero': hero, 'in-focus': focused }]}
+  data-headline={headline.toLowerCase()}
+>
   <a class="card__link" href={`/journalism/${slug}`}>
     <div class="card__media">
       <img
