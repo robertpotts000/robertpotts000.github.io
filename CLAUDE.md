@@ -3,12 +3,15 @@
 Robert Potts's portfolio site — an Astro static site (About, Editing, and a
 Journalism archive) published to GitHub Pages at robertpotts.co.uk.
 
-Two other documents carry the detail, and this file deliberately doesn't repeat
-them:
+Three other documents carry the detail, and this file deliberately doesn't
+repeat them:
 
 - **`.claude/skills/add-piece/`** — the publishing workflow (filenames, document
   tags, cover images, metadata, build, commit, push). Use the skill for any job
   that touches the archive.
+- **`.claude/skills/digitize-piece/`** — the same publishing workflow starting
+  from a photographed clipping instead of a `.docx`. Builds on `add-piece`
+  rather than repeating it — read that first.
 - **`README.md`** — Robert's own plain-language version of the same jobs, written
   for him to follow without Claude. If a step changes, both need updating.
 

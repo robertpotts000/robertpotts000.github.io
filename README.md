@@ -3,8 +3,9 @@
 This is a reference for the jobs you'll want to do most often: adding a new piece to
 the Journalism archive, changing the writing on the About and Editing pages, and the
 smaller jobs — taking a piece down, fixing a typo, choosing the featured piece — in
-Part 4. All file paths below are relative to the site's main folder — the one that
-contains this file.
+Part 4. Part 5 covers a piece you only have on paper — a cutting, something with no
+Word document. All file paths below are relative to the site's main folder — the one
+that contains this file.
 
 ---
 
@@ -329,3 +330,27 @@ Put the new image in `public/images/pieces/` named exactly `<slug>` plus its own
 file ending — e.g. `john-ashbery.jpg` — and delete the old one. If the new file
 ending is different from the old one (`.jpg` where it used to be `.jpeg`), change
 the `"image"` line in `src/data/pieces/<slug>.json` to match.
+
+---
+
+## Part 5 — Adding a piece from a photograph
+
+For a piece you only have on paper — an old cutting, something you never typed up —
+you don't need a Word document at all. This is a Claude-only job: there's no
+"do it yourself" option, because it needs Claude to actually read the photo.
+
+1. Open Command Prompt at the site's main folder and start Claude (Part 1, Step 5,
+   Option A, steps 1–3).
+2. Type `/digitize-piece` and press Enter, then attach or paste in the photo(s) of
+   the piece. A clear, straight-on, well-lit photo works best — if the piece runs
+   over more than one page or column, include all of them.
+3. Claude will type out the piece from the photo and read back the whole thing —
+   headline, any book/price details, and the full text — for you to check before
+   anything is built or published. Check it properly: a misread word won't look
+   wrong to Claude, only to you.
+4. It will also ask you for whatever the photo can't supply on its own — the
+   subheading (same as any piece, this is always your own words, never guessed),
+   a cover image, and to confirm the publication and date if they weren't visible
+   in the photo.
+5. Once you've confirmed everything, it publishes the piece the same way as Part 1
+   and gives you the live web address.
