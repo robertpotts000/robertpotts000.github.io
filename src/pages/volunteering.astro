@@ -7,53 +7,67 @@ import PageHeader from '../components/PageHeader.astro';
   <div class="page volunteering">
     <PageHeader title="Education and literacy" />
 
-    <div class="volunteering__body">
-      <p>
-        My mother, as a child, was saved by books. Born into poverty in Monmouth then raised
-        by her divorced mother in South London during the war, she had - for many reasons - no
-        stability in her life. But one thing her mother did give her was books. They read
-        together even during bombings (her mother disliked the shelters). All through her
-        life, my mother remembered being given an edition of the Iliad, allegedly retrieved
-        from a bomb site; of the worlds this opened up. (She could still recite, right to the
-        end, huge amounts of the literature she read as a child.)
-      </p>
-      <p>
-        My bookish mother gained a scholarship to Christ Hospital School, a charity school,
-        where she boarded, and had a schedule, and finally felt safe. (And was given her first
-        dressing gown!) And from there received an education that led to an exhibition to St
-        Anne's College Oxford where she went on to take a First in Modern Languages. That
-        Iliad, snatched from the rubble, changed my mother's life. For many children, books are
-        an escape; for some, they are also a ladder.
-      </p>
-      <p>
-        My mother was able to give her own children the stability she had lacked, and a
-        privileged education. I know how lucky I was, and am determined to give something
-        back, and to ensure that other children have the sort of life-changing experiences
-        that my mother did.
-      </p>
-      <h2 class="volunteering__heading">Governance</h2>
-      <p>
-        I am a Non-Executive Director and Trustee of Barton Academy Trust (BCAT), a
-        multi-academy trust in Kent that oversees three schools and is in the process of
-        taking in a fourth. They specialise in turning around schools which are struggling,
-        and improving the life chances of children from deprived backgrounds. I sit on the
-        Finance Committee and the Audit and Risk Committee, and also attend Quality Assurance
-        meetings at the Charles Dickens School in Thanet.
-      </p>
-      <h2 class="volunteering__heading">Volunteering</h2>
-      <p>
-        I also volunteer, through the charity Schoolreaders, as a reading assistant at a
-        primary school in Dover with a high proportion of SEND children. I sit with the
-        children as they read to me, and give them one-to-one encouragement and assistance.
-        This has been one of the greatest experiences of my life. To be greeted by a Year 8
-        child on my second week with the words "Are you reading with us today, Mr Potts?
-        HURRAH!" was unforgettable and uplifting.
-      </p>
-      <p>
-        And this summer I had the pleasure of volunteering with the Canterbury Children's
-        Literature Festival, "an annual celebration of stories and literacy, focusing on
-        inclusion, accessibility and celebrating the joy of stories in all their forms".
-      </p>
+    <div class="volunteering__grid">
+      <div class="volunteering__body">
+        <p>
+          My mother, as a child, was saved by books. Born into poverty in Monmouth then raised
+          by her divorced mother in South London during the war, she had - for many reasons - no
+          stability in her life. But one thing her mother did give her was books. They read
+          together even during bombings (her mother disliked the shelters). All through her
+          life, my mother remembered being given an edition of the Iliad, allegedly retrieved
+          from a bomb site; of the worlds this opened up. (She could still recite, right to the
+          end, huge amounts of the literature she read as a child.)
+        </p>
+        <p>
+          My bookish mother gained a scholarship to Christ Hospital School, a charity school,
+          where she boarded, and had a schedule, and finally felt safe. (And was given her first
+          dressing gown!) And from there received an education that led to an exhibition to St
+          Anne's College Oxford where she went on to take a First in Modern Languages. That
+          Iliad, snatched from the rubble, changed my mother's life. For many children, books are
+          an escape; for some, they are also a ladder.
+        </p>
+        <p>
+          My mother was able to give her own children the stability she had lacked, and a
+          privileged education. I know how lucky I was, and am determined to give something
+          back, and to ensure that other children have the sort of life-changing experiences
+          that my mother did.
+        </p>
+        <h2 class="volunteering__heading">Governance</h2>
+        <p>
+          I am a Non-Executive Director and Trustee of Barton Academy Trust (BCAT), a
+          multi-academy trust in Kent that oversees three schools and is in the process of
+          taking in a fourth. They specialise in turning around schools which are struggling,
+          and improving the life chances of children from deprived backgrounds. I sit on the
+          Finance Committee and the Audit and Risk Committee, and also attend Quality Assurance
+          meetings at the Charles Dickens School in Thanet.
+        </p>
+        <h2 class="volunteering__heading">Volunteering</h2>
+        <p>
+          I also volunteer, through the charity Schoolreaders, as a reading assistant at a
+          primary school in Dover with a high proportion of SEND children. I sit with the
+          children as they read to me, and give them one-to-one encouragement and assistance.
+          This has been one of the greatest experiences of my life. To be greeted by a Year 8
+          child on my second week with the words "Are you reading with us today, Mr Potts?
+          HURRAH!" was unforgettable and uplifting.
+        </p>
+        <p>
+          And this summer I had the pleasure of volunteering with the Canterbury Children's
+          Literature Festival, "an annual celebration of stories and literacy, focusing on
+          inclusion, accessibility and celebrating the joy of stories in all their forms".
+        </p>
+      </div>
+
+      <div class="volunteering__gallery" aria-label="Photos">
+        <figure class="volunteering__photo">
+          <img src="/images/volunteering/photo-1.jpeg" alt="" loading="lazy" />
+        </figure>
+        <figure class="volunteering__photo">
+          <img src="/images/volunteering/photo-2.jpeg" alt="" loading="lazy" />
+        </figure>
+        <figure class="volunteering__photo">
+          <img src="/images/volunteering/photo-3.jpeg" alt="" loading="lazy" />
+        </figure>
+      </div>
     </div>
   </div>
 </BaseLayout>
@@ -63,8 +77,14 @@ import PageHeader from '../components/PageHeader.astro';
     padding-top: clamp(2rem, 6vw, 4rem);
     padding-bottom: 5rem;
   }
-  .volunteering__body {
+  .volunteering__grid {
     margin-top: clamp(1.5rem, 4vw, 2.75rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .volunteering__body {
     max-width: var(--reading-max);
     font-size: 1.2rem;
   }
@@ -76,5 +96,35 @@ import PageHeader from '../components/PageHeader.astro';
   .volunteering__heading {
     font-size: 1.6rem;
     margin-top: 2rem;
+  }
+
+  .volunteering__gallery {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(1rem, 2.5vw, 1.75rem);
+  }
+  .volunteering__photo {
+    margin: 0;
+  }
+  .volunteering__photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-line);
+  }
+
+  @media (max-width: 52rem) {
+    .volunteering__grid {
+      grid-template-columns: 1fr;
+    }
+    .volunteering__gallery {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .volunteering__photo {
+      flex: 1 1 calc(50% - 0.75rem);
+      min-width: 10rem;
+    }
   }
 </style>
