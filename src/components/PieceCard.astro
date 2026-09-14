@@ -118,8 +118,12 @@ const iso = hero && date ? date.toISOString().slice(0, 10) : undefined;
   }
   .card__media img {
     width: clamp(96px, 20vw, 168px);
-    height: clamp(96px, 20vw, 168px);
-    object-fit: cover;
+    /* Taller than wide, and object-fit: contain rather than cover — shows the
+       whole cover image uncropped, same as the hero card, but at a fixed size
+       so every card in a list lines up instead of following each image's own
+       aspect ratio. */
+    height: clamp(128px, 26vw, 224px);
+    object-fit: contain;
     border-radius: 3px;
     background: var(--color-bg);
   }
@@ -182,7 +186,7 @@ const iso = hero && date ? date.toISOString().slice(0, 10) : undefined;
     }
     .card__media img {
       width: clamp(120px, 42vw, 200px);
-      height: clamp(120px, 42vw, 200px);
+      height: clamp(160px, 55vw, 266px);
     }
   }
 </style>
