@@ -9,5 +9,5 @@ const pieces = (await getCollection('pieces', (p) => !p.data.draft)).sort(
 ---
 
 <BaseLayout title="Robert Potts — Archive" active="journalism" appShell>
-  <PieceCarousel title="Archive" pieces={pieces} ariaLabel="All journalism pieces" />
+  <PieceCarousel title="Archive" pieces={pieces} ariaLabel="All journalism pieces" active="archive" />
 </BaseLayout>

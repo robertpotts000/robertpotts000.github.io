@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHeader from '../../components/PageHeader.astro';
 import PieceCard from '../../components/PieceCard.astro';
+import JournalismSubNav from '../../components/JournalismSubNav.astro';
 
 const pieces = (await getCollection('pieces', (p) => !p.data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
@@ -13,6 +14,10 @@ const recent = pieces.slice(0, 4);
 <BaseLayout title="Robert Potts — Journalism" active="journalism">
   <div class="page journalism-landing">
     <PageHeader title="Journalism" />
+
+    <div class="journalism-landing__subnav">
+      <JournalismSubNav />
+    </div>
 
     <div class="journalism-landing__intro">
       <p>
@@ -63,12 +68,19 @@ const recent = pieces.slice(0, 4);
     padding: clamp(2rem, 6vw, 4rem) clamp(1.25rem, 4vw, 3rem) 5rem;
   }
 
+  .journalism-landing__subnav {
+    margin-top: clamp(1.25rem, 3vw, 1.75rem);
+  }
+
   .journalism-landing__intro {
     max-width: var(--reading-max);
     margin-top: clamp(1.5rem, 4vw, 2.25rem);
     font-size: 1.2rem;
     line-height: 1.55;
     color: var(--color-ink-soft);
+  }
+  .journalism-landing__intro a {
+    text-decoration: underline;
   }
   .journalism-landing__intro p {
     margin: 0 0 1.1em;

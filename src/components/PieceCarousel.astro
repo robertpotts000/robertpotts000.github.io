@@ -1,14 +1,17 @@
 ---
 import PageHeader from './PageHeader.astro';
 import PieceCard from './PieceCard.astro';
+import JournalismSubNav from './JournalismSubNav.astro';
 import type { CollectionEntry } from 'astro:content';
 
 interface Props {
   title: string;
   pieces: CollectionEntry<'pieces'>[];
   ariaLabel: string;
+  /** Which category link to mark current in the subnav — omit to hide it. */
+  active?: 'interviews' | 'music' | 'archive';
 }
-const { title, pieces, ariaLabel } = Astro.props;
+const { title, pieces, ariaLabel, active } = Astro.props;
 ---
 
 <section class="journalism" aria-label={ariaLabel}>
@@ -27,6 +30,9 @@ const { title, pieces, ariaLabel } = Astro.props;
           />
         </div>
       </PageHeader>
+      <div class="journalism__subnav">
+        <JournalismSubNav active={active} />
+      </div>
     </div>
   </div>
 
@@ -75,6 +81,10 @@ const { title, pieces, ariaLabel } = Astro.props;
     max-width: var(--content-max);
     margin: 0 auto;
     padding: clamp(1.25rem, 3.5vw, 2.25rem) clamp(1.25rem, 4vw, 3rem) 1.25rem;
+  }
+
+  .journalism__subnav {
+    margin-top: 1rem;
   }
 
   .search__input {

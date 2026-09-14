@@ -1,0 +1,61 @@
+---
+interface Props {
+  /** Which link to mark as the current page, if any. */
+  active?: 'interviews' | 'music' | 'archive';
+}
+const { active } = Astro.props;
+
+const links = [
+  { href: '/journalism/interviews', label: 'Interviews', key: 'interviews' },
+  { href: '/journalism/music', label: 'Music', key: 'music' },
+  { href: '/journalism/archive', label: 'Archive', key: 'archive' },
+] as const;
+---
+
+<nav class="subnav" aria-label="Journalism categories">
+  <ul class="subnav__list">
+    {
+      links.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class:list={['subnav__link', { 'is-active': link.key === active }]}
+            aria-current={link.key === active ? 'page' : undefined}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .subnav__list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    padding: 0;
+    margin: 0;
+  }
+  .subnav__link {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-ink-soft);
+    text-decoration: none;
+    padding-bottom: 0.2rem;
+    border-bottom: 2px solid transparent;
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
+  .subnav__link:hover {
+    color: var(--color-accent);
+  }
+  .subnav__link.is-active {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+</style>
