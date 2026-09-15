@@ -6,8 +6,25 @@ import PieceCarousel from '../../components/PieceCarousel.astro';
 const pieces = (await getCollection('pieces', (p) => !p.data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
+
+// Plain-text body per slug, so the search box can match piece content too,
+// not just the headline.
+const htmlModules = import.meta.glob('../../pieces/html/*.html', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+});
+const bodies: Record<string, string> = {};
+for (const piece of pieces) {
+  const key = Object.keys(htmlModules).find((k) => k.endsWith(`/${piece.id}.html`));
+  if (!key) continue;
+  bodies[piece.id] = (htmlModules[key] as string)
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
 ---
 
-<BaseLayout title="Robert Potts — Archive" active="journalism" appShell>
-  <PieceCarousel title="Archive" pieces={pieces} ariaLabel="All journalism pieces" active="archive" />
+<BaseLayout title="Robert Potts — Archive" active="journalism" appShell subnav subnavActive="archive">
+  <PieceCarousel title="Archive" pieces={pieces} ariaLabel="All journalism pieces" bodies={bodies} />
 </BaseLayout>

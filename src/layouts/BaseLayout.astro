@@ -11,6 +11,7 @@ import '@fontsource/eb-garamond/600.css';
 import '../styles/tokens.css';
 import '../styles/global.css';
 import TopBar from '../components/TopBar.astro';
+import JournalismSubNav from '../components/JournalismSubNav.astro';
 
 interface Props {
   /** Page <title>; also drives the browser tab. */
@@ -25,6 +26,10 @@ interface Props {
    * Normal pages scroll the document as usual.
    */
   appShell?: boolean;
+  /** Show the Interviews/Music/Archive strip under the top bar — journalism pages only. */
+  subnav?: boolean;
+  /** Which subnav link to mark current; omit on the Journalism landing page itself. */
+  subnavActive?: 'interviews' | 'music' | 'archive';
 }
 
 const {
@@ -32,6 +37,8 @@ const {
   description = 'Robert Potts — literary critic. Journalism, criticism, and editing.',
   active,
   appShell = false,
+  subnav = false,
+  subnavActive,
 } = Astro.props;
 ---
 
@@ -47,6 +54,15 @@ const {
   </head>
   <body class:list={[{ 'app-shell': appShell }]}>
     <TopBar active={active} />
+    {
+      subnav && (
+        <div class="subnav-strip">
+          <div class="subnav-strip__inner">
+            <JournalismSubNav active={subnavActive} />
+          </div>
+        </div>
+      )
+    }
     <main class="site-main">
       <slot />
     </main>
@@ -60,6 +76,20 @@ const {
       }
       .site-main {
         flex: 1 1 auto;
+      }
+
+      .subnav-strip {
+        position: sticky;
+        top: var(--topbar-h);
+        z-index: 40;
+        flex: 0 0 auto;
+        background: var(--color-bg);
+        border-bottom: 1px solid var(--color-line);
+      }
+      .subnav-strip__inner {
+        max-width: var(--content-max);
+        margin: 0 auto;
+        padding: 0.85rem clamp(1.25rem, 4vw, 3rem);
       }
 
       /* App-shell (Journalism): lock the viewport; only inner regions scroll. */

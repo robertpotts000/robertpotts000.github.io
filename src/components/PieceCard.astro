@@ -17,6 +17,8 @@ interface Props {
   focused?: boolean;
   /** Element tag: <li> inside the carousel, <div> when standalone. */
   as?: 'li' | 'div';
+  /** Plain-text body, for carousels that search piece content as well as headline. */
+  searchText?: string;
 }
 const {
   slug,
@@ -29,6 +31,7 @@ const {
   hero = false,
   focused = false,
   as = 'li',
+  searchText,
 } = Astro.props;
 
 const Wrapper = as;
@@ -47,6 +50,7 @@ const iso = hero && date ? date.toISOString().slice(0, 10) : undefined;
 <Wrapper
   class:list={['card', { 'card--hero': hero, 'in-focus': focused }]}
   data-headline={headline.toLowerCase()}
+  data-body={searchText ? searchText.toLowerCase() : undefined}
 >
   <a class="card__link" href={`/journalism/${slug}`}>
     <div class="card__media">
