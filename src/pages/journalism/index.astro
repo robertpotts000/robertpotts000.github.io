@@ -60,28 +60,34 @@ const recent = pieces.slice(0, 4);
   .journalism-landing {
     max-width: var(--content-max);
     margin: 0 auto;
-    padding: clamp(2rem, 6vw, 4rem) clamp(1.25rem, 4vw, 3rem) 5rem;
+    padding: clamp(1.25rem, 3vw, 2rem) clamp(1.25rem, 4vw, 3rem) 3rem;
+  }
+
+  /* Smaller than the default page title, just on this page — the intro text
+     plus four cards need the room on shorter screens. */
+  .journalism-landing :global(.page-header__title) {
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
   }
 
   .journalism-landing__intro {
     max-width: var(--reading-max);
-    margin-top: clamp(1.5rem, 4vw, 2.25rem);
-    font-size: 1.2rem;
-    line-height: 1.55;
+    margin-top: clamp(1rem, 2.5vw, 1.5rem);
+    font-size: 1.1rem;
+    line-height: 1.48;
     color: var(--color-ink-soft);
   }
   .journalism-landing__intro a {
     text-decoration: underline;
   }
   .journalism-landing__intro p {
-    margin: 0 0 1.1em;
+    margin: 0 0 0.85em;
   }
   .journalism-landing__intro p:last-child {
     margin-bottom: 0;
   }
 
   .journalism-landing__recent {
-    margin-top: clamp(2.5rem, 6vw, 4rem);
+    margin-top: clamp(1.25rem, 3vw, 2rem);
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(1.25rem, 3vw, 2rem);
