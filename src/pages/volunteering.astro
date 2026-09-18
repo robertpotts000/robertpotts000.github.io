@@ -60,12 +60,15 @@ import PageHeader from '../components/PageHeader.astro';
       <div class="volunteering__gallery" aria-label="Photos">
         <figure class="volunteering__photo">
           <img src="/images/volunteering/photo-1.jpeg" alt="" loading="lazy" />
+          <figcaption>Bunny and Monkey at Fenwick, Canterbury Children's Literature Festival 2026</figcaption>
         </figure>
         <figure class="volunteering__photo">
           <img src="/images/volunteering/photo-2.jpeg" alt="" loading="lazy" />
+          <figcaption>Mama G's Storytime, Waterstones, Canterbury Children's Literature Festival 2026</figcaption>
         </figure>
         <figure class="volunteering__photo">
           <img src="/images/volunteering/photo-3.jpeg" alt="" loading="lazy" />
+          <figcaption>Year 4 end-of-term cards, 2026</figcaption>
         </figure>
       </div>
     </div>
@@ -102,9 +105,17 @@ import PageHeader from '../components/PageHeader.astro';
   }
 
   .volunteering__gallery {
+    /* Stretches to the full height of the grid row (i.e. matches the prose
+       column) so space-between can put the first photo's top and the last
+       photo's bottom exactly level with the text, whatever its length. */
+    align-self: stretch;
     display: flex;
     flex-direction: column;
-    gap: clamp(1rem, 2.5vw, 1.75rem);
+    justify-content: space-between;
+    gap: 1.5rem;
+    /* Optical nudge: a text line's cap-height sits below its line-box top,
+       so an image's hard top edge otherwise looks a fraction high next to it. */
+    margin-top: 0.4rem;
   }
   .volunteering__photo {
     margin: 0;
@@ -116,14 +127,25 @@ import PageHeader from '../components/PageHeader.astro';
     border-radius: var(--radius);
     border: 1px solid var(--color-line);
   }
+  .volunteering__photo figcaption {
+    margin-top: 0.5rem;
+    font-style: italic;
+    font-size: 0.95rem;
+    line-height: 1.4;
+    color: var(--color-ink-soft);
+  }
 
   @media (max-width: 52rem) {
     .volunteering__grid {
       grid-template-columns: 1fr;
     }
     .volunteering__gallery {
+      align-self: auto;
       flex-direction: row;
       flex-wrap: wrap;
+      justify-content: flex-start;
+      gap: clamp(1rem, 2.5vw, 1.75rem);
+      margin-top: 0;
     }
     .volunteering__photo {
       flex: 1 1 calc(50% - 0.75rem);
