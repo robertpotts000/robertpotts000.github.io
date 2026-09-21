@@ -32,6 +32,14 @@ asked.
   missing, ask. You may offer a draft only when it's clearly labelled a
   suggestion, and only use it if he says yes.
 - **Ask for everything missing in one message.** Not one question at a time.
+- **Parenthetical dashes are spaced en-rules ( – ), not hyphens ( - ) or
+  em-rules (—).** Applies to site chrome copy (About, Journalism landing,
+  etc.) and, going forward, to piece bodies too — fixed in the source
+  `.docx`, never in generated `src/pieces/html/*.html`, same as any other
+  body-text fix (§ above). Flag any deviation you spot rather than silently
+  leaving it. He's planning a separate pass through the existing archive for
+  this and other issues — don't go hunting through already-published pieces
+  uninvited.
 - **The source document is the source of truth.** Metadata comes from the
   `.docx` filename and the tags inside the document; body text comes from the
   document. Fix problems there, never in generated output
