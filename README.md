@@ -89,6 +89,20 @@ This is entirely optional, housekeeping only — nothing on the site uses it yet
 and leaving it off costs you nothing later, you can always add it (or edit it)
 in the piece's file afterwards.
 
+**Optional — mark a long quotation.** Anywhere in the body of the piece, wrap
+a passage in `<quote>` and `</quote>` to set it apart as an indented block
+quotation, with a thin line down the left and slightly smaller type:
+
+```
+<quote>The text of the quotation goes here.</quote>
+```
+
+For something like a poem, where each line matters, put a line break
+(**Shift + Enter**) between lines rather than a plain Enter — the line breaks
+are kept exactly as you type them. Unlike the tags above, this one isn't
+metadata — it stays as part of the piece and can appear as many times as you
+like, wherever a passage calls for it.
+
 ### Step 3 — Save the Word document here
 
 `content-src/docx/`

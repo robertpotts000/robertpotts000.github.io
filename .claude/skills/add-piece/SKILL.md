@@ -121,6 +121,31 @@ they never render, and seeds the metadata with them.
   as escaped text. Before asking Robert to redo anything, look at the body for
   `&lt;headline`. Repair procedure: `reference/docx-repair.md`.
 
+## 3a. `<quote>` marks a long quotation, anywhere in the body
+
+```
+<quote>Text of the quotation, one or more lines.</quote>
+```
+
+Unlike the tags above, `<quote>` isn't metadata — it stays in the piece and
+changes how that passage renders: an indented `<blockquote class="piece-quote">`
+with a thin left rule and fractionally smaller type (styling lives in
+`src/pages/journalism/[slug].astro`, under `.piece-quote`). Use it for a
+passage he wants set apart as a block quotation — an extract, a stanza of
+someone else's poem, and so on.
+
+- It can sit on its own paragraph or mid-paragraph among other text — the
+  converter (`convertQuotes` in `scripts/convert-docs.mjs`) splits around it
+  either way, which matters because some of Robert's documents run the whole
+  body as soft line breaks (Shift+Enter) inside one paragraph rather than
+  separate hard paragraphs.
+- Line breaks *inside* the tag (Shift+Enter, e.g. for a poem's lines) are kept
+  as line breaks in the rendered quote. Formatting inside it, e.g. italics,
+  is kept as-is.
+- Same typo risk as the other tags: a missing `>` leaks `&lt;quote` into the
+  body as visible text instead of being recognised.
+- Optional, and there's no limit on how many appear in one piece.
+
 ## 4. Convert
 
 1. If Word has the document open, ask him to close it — Word leaves a `~$…docx`
