@@ -178,6 +178,39 @@ function extractTag(html, tag) {
   return { value, html: html.slice(0, match.index) + html.slice(match.index + match[0].length) };
 }
 
+/**
+ * Turns "&lt;quote&gt;...&lt;/quote&gt;" spans into <blockquote class="piece-quote">
+ * elements, unlike extractTag's metadata tags this one stays in the body — it just
+ * changes how it renders. Unlike the metadata tags, it isn't required to sit alone
+ * in its own paragraph: Robert's pieces are often one long paragraph strung together
+ * with soft line breaks (<br>), so a quote can appear mid-paragraph. Any surrounding
+ * <p>...</p> is split around it so the blockquote isn't nested inside a <p> (invalid
+ * HTML); inner markup (italics, line breaks) is kept as-is rather than decoded, since
+ * it's real formatting, not metadata text.
+ */
+function convertQuotes(html) {
+  const quoteRe = /(?:\s*<br\s*\/?>\s*)*&lt;quote&gt;([\s\S]*?)&lt;\/quote&gt;(?:\s*<br\s*\/?>\s*)*/gi;
+
+  return html.replace(/<p>([\s\S]*?)<\/p>/g, (full, inner) => {
+    if (!/&lt;quote&gt;/i.test(inner)) return full;
+
+    const parts = [];
+    let lastIndex = 0;
+    let match;
+    quoteRe.lastIndex = 0;
+    while ((match = quoteRe.exec(inner))) {
+      const before = inner.slice(lastIndex, match.index).trim();
+      if (before) parts.push(`<p>${before}</p>`);
+      const quoteInner = match[1].trim();
+      parts.push(`<blockquote class="piece-quote"><p>${quoteInner}</p></blockquote>`);
+      lastIndex = quoteRe.lastIndex;
+    }
+    const after = inner.slice(lastIndex).trim();
+    if (after) parts.push(`<p>${after}</p>`);
+    return parts.join('');
+  });
+}
+
 async function main() {
   await fs.mkdir(HTML_DIR, { recursive: true });
   await fs.mkdir(META_DIR, { recursive: true });
@@ -245,6 +278,7 @@ async function main() {
           .map((c) => c.trim().toLowerCase())
           .filter(Boolean)
       : [];
+    html = convertQuotes(html);
 
     await fs.writeFile(path.join(HTML_DIR, `${slug}.html`), `${html.trim()}\n`, 'utf8');
 
