@@ -141,6 +141,13 @@ const iso = date.toISOString().slice(0, 10);
   .piece__aside {
     position: sticky;
     top: calc(var(--topbar-h) + 1.5rem);
+    max-height: calc(100vh - var(--topbar-h) - 3rem);
+    overflow-y: auto;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* old Edge */
+  }
+  .piece__aside::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
   }
   .piece__cover {
     display: block;
@@ -218,6 +225,8 @@ const iso = date.toISOString().slice(0, 10);
       position: static;
       order: -1;
       max-width: 12rem;
+      max-height: none;
+      overflow-y: visible;
     }
   }
 </style>
