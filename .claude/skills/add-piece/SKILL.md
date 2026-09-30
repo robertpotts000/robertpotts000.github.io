@@ -151,7 +151,7 @@ someone else's poem, and so on.
 ## 3b. `<url>` gates a piece behind its outlet's paywall for a year
 
 Robert respects his employers' paywalls: a piece less than a year old (and
-not type `Blog`) shows only its first paragraph on its own page, followed by
+not type `Blog`) shows only its first two paragraphs on its own page, followed by
 "To continue reading, please click here" linking to `sourceUrl` — the logic
 is `isGated`/`teaser` in `src/lib/gating.ts`, used by both
 `src/pages/journalism/[slug].astro` and `journalism/archive.astro` (the

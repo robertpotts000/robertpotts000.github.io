@@ -91,7 +91,7 @@ in the piece's file afterwards.
 
 **Required for anything less than a year old — the link to where it was
 published.** So the site respects your employers' paywalls, any piece under a
-year old (other than a Blog post) shows only its first paragraph, with "To
+year old (other than a Blog post) shows only its first two paragraphs, with "To
 continue reading, please click here" linking out to wherever it first
 appeared. Add a fifth tag with that link:
 
