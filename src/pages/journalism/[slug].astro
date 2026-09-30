@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TagBadge from '../../components/TagBadge.astro';
+import { isGated, teaser } from '../../lib/gating';
 
 export async function getStaticPaths() {
   const pieces = await getCollection('pieces', (p) => !p.data.draft);
@@ -12,7 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { piece } = Astro.props;
-const { headline, subheading, type, date, image, details } = piece.data;
+const { headline, subheading, type, date, image, details, sourceUrl } = piece.data;
 const detailLines =
   details && details !== 'Null' ? details.split('\n').filter((line) => line.trim()) : [];
 
@@ -23,7 +24,11 @@ const htmlModules = import.meta.glob('../../pieces/html/*.html', {
   eager: true,
 });
 const key = Object.keys(htmlModules).find((k) => k.endsWith(`/${piece.id}.html`));
-const body = key ? (htmlModules[key] as string) : '';
+let body = key ? (htmlModules[key] as string) : '';
+
+if (body && sourceUrl && isGated({ type, date, sourceUrl })) {
+  body = teaser(body, sourceUrl) ?? body;
+}
 
 const dateFmt = new Intl.DateTimeFormat('en-GB', {
   day: 'numeric',
@@ -205,6 +210,10 @@ const iso = date.toISOString().slice(0, 10);
     border-left: 2px solid var(--color-line);
     padding-left: 0.9rem;
     margin-bottom: 2rem;
+  }
+  .piece__body :global(.piece-gate) {
+    font-style: italic;
+    color: var(--color-ink-soft);
   }
 
   .piece__back {

@@ -26,6 +26,12 @@ const pieces = defineCollection({
     publication: z.string().optional(),
     /** Extra context (e.g. book/publisher details) from the doc's <details> tag. Not yet shown on the site. */
     details: z.string().optional(),
+    /**
+     * Where the piece first appeared online, from the doc's <url> tag. Pieces less
+     * than a year old (and not type "Blog") show only their first paragraph plus a
+     * link here, out of respect for the outlet's paywall — see src/lib/gating.ts.
+     */
+    sourceUrl: z.string().url().optional(),
     /** Curated-page groupings; a piece may carry several. "music" and "interviews" drive /journalism/music and /journalism/interviews. */
     categories: z.array(z.string()).optional().default([]),
   }),

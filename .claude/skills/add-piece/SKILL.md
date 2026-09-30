@@ -26,6 +26,7 @@ Work in order. Never push a build that failed.
 | Cover image | An image file Robert drops in `public/images/pieces/` | **Ask him for one and stop.** There is no placeholder — see §5. |
 | `details` | `<details>` tag in the doc | Optional. Genuinely fine to omit. |
 | `categories` | `<category>` tag in the doc | Optional. For future curated pages — see §3. |
+| `sourceUrl` | `<url>` tag in the doc | **Required if the piece is less than a year old and isn't type `Blog`** — see §3b. Ask for the link and stop; without it the piece can't respect the outlet's paywall and shouldn't go up. Optional for anything older, or for Blog pieces. |
 
 Never write the headline, subheading, date, type or publication from your own
 inference. He is a critic and an editor; the words on his site are his.
@@ -91,6 +92,7 @@ At the top of the document, each on its own paragraph:
 <subheading>One sentence that draws the reader in</subheading>
 <details>Book, author, extent, publisher, price</details>
 <category>pop, guardian</category>
+<url>https://wherever-it-was-published.example/the-piece</url>
 ```
 
 The converter finds these anywhere in the document, strips them from the body so
@@ -145,6 +147,29 @@ someone else's poem, and so on.
 - Same typo risk as the other tags: a missing `>` leaks `&lt;quote` into the
   body as visible text instead of being recognised.
 - Optional, and there's no limit on how many appear in one piece.
+
+## 3b. `<url>` gates a piece behind its outlet's paywall for a year
+
+Robert respects his employers' paywalls: a piece less than a year old (and
+not type `Blog`) shows only its first paragraph on its own page, followed by
+"To continue reading, please click here" linking to `sourceUrl` — the logic
+is `isGated`/`teaser` in `src/lib/gating.ts`, used by both
+`src/pages/journalism/[slug].astro` and `journalism/archive.astro` (the
+latter so the archive's search box doesn't leak the hidden text into the page
+source). Once the piece turns a year old it reverts to showing in full — no
+action needed, but note this site only rebuilds on push, so a scheduled
+weekly rebuild (`.github/workflows/static.yml`) is what actually flips it on
+schedule, not the passage of time alone.
+
+- Ask for this link as part of publishing any piece less than a year old —
+  same tier as the cover image (§5): ask and stop rather than publish a
+  recent piece with nothing to gate it.
+- `Blog` pieces are exempt automatically — there's no outlet paywall to
+  respect for something self-published.
+- Optional, and safe to leave off, for anything already a year or older.
+- If it's missing on an already-published recent piece, add it straight to
+  `src/data/pieces/<slug>.json` as `"sourceUrl"` (see "Related tasks") — no
+  need to touch the doc or re-convert.
 
 ## 4. Convert
 
@@ -211,6 +236,7 @@ him to confirm rather than re-deriving it:
   "date": "2001-03-10",
   "image": "/images/pieces/john-ashbery.jpeg",
   "publication": "Guardian",
+  "sourceUrl": "https://theguardian.com/books/2001/mar/10/whatever-the-real-path-was",
   "details": "John Ashbery and American Poetry\nDavid Herd\n208pp, Manchester University Press, £45."
 }
 ```
@@ -221,9 +247,11 @@ publication code or a transposed date — cheaper now than after publishing.
 - `image` is a web path with a leading slash, resolved from `public/`.
 - `details` and `publication` are stored but **deliberately not rendered
   anywhere** on the site. Leave them; don't add display markup unless
-  separately asked. `categories` is the exception: `"music"` and
-  `"interviews"` feed the `/journalism/music` and `/journalism/interviews`
-  pages (see §3) — any other category value is still unused.
+  separately asked. `categories` and `sourceUrl` are the exceptions:
+  `"music"` and `"interviews"` feed the `/journalism/music` and
+  `/journalism/interviews` pages (see §3) — any other category value is still
+  unused; `sourceUrl` drives the paywall-respecting teaser on recent pieces
+  (§3b) and does render, as the "click here" link.
 - `featured` and `draft` are optional booleans — omit them when false.
 - Extra information with no field (a strapline, a co-author) is not a new JSON
   key: the schema will reject it and the build will fail. Say it would need a
@@ -303,6 +331,12 @@ Briefly:
 - **A piece belongs on Music or Interviews:** add `"music"` or `"interviews"`
   to its `categories` array (§3) — it'll pick up automatically on
   `/journalism/music` or `/journalism/interviews`. No other step needed.
+- **Add or fix a `sourceUrl` on an already-published piece:** edit
+  `src/data/pieces/<slug>.json` directly (§3b) — takes effect on the next
+  build, no re-convert needed. If he wants the gate lifted immediately rather
+  than waiting for the next scheduled rebuild, either push any commit or run
+  the "Deploy to GitHub Pages" workflow manually from the Actions tab
+  (`workflow_dispatch`).
 
 ## Never
 

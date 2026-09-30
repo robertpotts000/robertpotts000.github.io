@@ -13,7 +13,10 @@
 // supply the rest of the required metadata and are stripped from the body before
 // it is written out. An optional <category> tag holds a comma-separated list
 // (e.g. "pop, guardian") for future curated pages — not required, not yet
-// rendered anywhere.
+// rendered anywhere. An optional <url> tag holds the link to where the piece
+// first appeared online — required in practice for anything less than a year
+// old (see src/lib/gating.ts), since that's what a piece under embargo links
+// out to instead of showing in full.
 //
 // The cover image is picked up from public/images/pieces/, where it can be named
 // either after the .docx ("R G 2001 03 10 John Ashbery.jpg") or after the slug
@@ -270,6 +273,8 @@ async function main() {
     html = subheading.html;
     const details = extractTag(html, 'details');
     html = details.html;
+    const url = extractTag(html, 'url');
+    html = url.html;
     const category = extractTag(html, 'category');
     html = category.html;
     const categories = category.value
@@ -328,6 +333,7 @@ async function main() {
         publication: parsed.publication,
       };
       if (details.value) meta.details = details.value;
+      if (url.value) meta.sourceUrl = url.value;
       if (categories.length) meta.categories = categories;
 
       await fs.writeFile(metaPath, `${JSON.stringify(meta, null, 2)}\n`, 'utf8');

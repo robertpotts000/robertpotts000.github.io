@@ -2,6 +2,7 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PieceCarousel from '../../components/PieceCarousel.astro';
+import { isGated, teaser } from '../../lib/gating';
 
 const pieces = (await getCollection('pieces', (p) => !p.data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
@@ -14,14 +15,20 @@ const htmlModules = import.meta.glob('../../pieces/html/*.html', {
   import: 'default',
   eager: true,
 });
+// A piece under embargo (see src/lib/gating.ts) only shows its first
+// paragraph on the page — the search index has to match, or the rest of the
+// body would still be readable in the page's HTML source even though it's
+// not displayed.
 const bodies: Record<string, string> = {};
 for (const piece of pieces) {
   const key = Object.keys(htmlModules).find((k) => k.endsWith(`/${piece.id}.html`));
   if (!key) continue;
-  bodies[piece.id] = (htmlModules[key] as string)
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
+  let html = htmlModules[key] as string;
+  const { sourceUrl } = piece.data;
+  if (sourceUrl && isGated(piece.data)) {
+    html = teaser(html, sourceUrl) ?? html;
+  }
+  bodies[piece.id] = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }
 ---
 

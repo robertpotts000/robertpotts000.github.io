@@ -3,6 +3,13 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [ main ]
+  # Recent pieces are gated behind a "click here to continue reading" link for
+  # a year, then revert to showing in full (src/lib/gating.ts) — but that only
+  # takes effect on a rebuild, and this site otherwise only rebuilds on push.
+  # This weekly rebuild is what actually lifts the gate on schedule.
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
 
 permissions:
   contents: read

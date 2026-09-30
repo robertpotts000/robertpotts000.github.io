@@ -89,6 +89,23 @@ This is entirely optional, housekeeping only — nothing on the site uses it yet
 and leaving it off costs you nothing later, you can always add it (or edit it)
 in the piece's file afterwards.
 
+**Required for anything less than a year old — the link to where it was
+published.** So the site respects your employers' paywalls, any piece under a
+year old (other than a Blog post) shows only its first paragraph, with "To
+continue reading, please click here" linking out to wherever it first
+appeared. Add a fifth tag with that link:
+
+```
+<url>https://wherever-it-was-published.example/the-piece</url>
+```
+
+A year after the piece's date, it automatically switches to showing in full
+and the link disappears — you don't need to do anything for that to happen,
+though it can take up to a week, since the site only rechecks the date when
+it rebuilds. If you don't have the link yet, that's fine — say so when you
+ask for the piece to be published, and add it to the piece's file once you
+do (see Part 4).
+
 **Optional — mark a long quotation.** Anywhere in the body of the piece, wrap
 a passage in `<quote>` and `</quote>` to set it apart as an indented block
 quotation, with a thin line down the left and slightly smaller type:
@@ -195,15 +212,17 @@ first, and a single run handles the lot.
      "date": "2026-05-18",
      "image": "/images/pieces/the-uses-of-difficulty.jpg",
      "publication": "Guardian",
+     "sourceUrl": "https://wherever-it-was-published.example/the-piece",
      "details": "Null"
    }
    ```
 
-   `headline`, `subheading` and `details` come from the document's tags; `type`,
-   `date` and `publication` come from the file name; `image` is your cover image under
-   its new name. Check they're all correct — this is the moment to catch a wrong
-   publication code or a mistyped date. If you added the optional `<category>` tag,
-   you'll also see a `"categories"` line listing what you typed there.
+   `headline`, `subheading`, `details` and `sourceUrl` come from the document's
+   tags; `type`, `date` and `publication` come from the file name; `image` is
+   your cover image under its new name. Check they're all correct — this is
+   the moment to catch a wrong publication code or a mistyped date. If you
+   added the optional `<category>` tag, you'll also see a `"categories"` line
+   listing what you typed there.
 
    From here on it's this file, not the Word document, that the site reads for those
    details: `npm run convert` will never overwrite it. So to change a headline later,
@@ -322,11 +341,16 @@ Correct it in the Word document in `content-src/docx/`, save, close Word, then r
 fresh from the Word document every time, so a fix made there is lost on the next
 run.
 
-### Changing a headline, subheading, date, details or categories after publishing
+### Changing a headline, subheading, date, details, categories or the source link after publishing
 
 Edit `src/data/pieces/<slug>.json` directly — that file is what the site reads, and
 `npm run convert` won't touch it again. It's worth correcting the tags in the Word
 document to match, so the two don't disagree if the piece is ever converted afresh.
+
+Adding or fixing `"sourceUrl"` (the "continue reading" link on a piece less than a
+year old — see Step 2) takes effect the next time the site rebuilds, which happens
+automatically within about a week even without you doing anything. To make it
+happen sooner, push any change, or ask Claude to trigger a rebuild.
 
 The one thing not to change here is the piece's web address: that comes from the
 file name and people may already have linked to it.
