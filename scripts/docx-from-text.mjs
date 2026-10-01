@@ -36,7 +36,16 @@ function paragraphXml(text) {
   const lines = String(text).split('\n');
   const runs = lines
     .map((line, i) => {
-      const run = `<w:r><w:t xml:space="preserve">${escapeXml(line)}</w:t></w:r>`;
+      // *text* marks italics, as printed.
+      const run = line
+        .split(/(\*[^*]+\*)/)
+        .filter(Boolean)
+        .map((part) =>
+          /^\*[^*]+\*$/.test(part)
+            ? `<w:r><w:rPr><w:i/></w:rPr><w:t xml:space="preserve">${escapeXml(part.slice(1, -1))}</w:t></w:r>`
+            : `<w:r><w:t xml:space="preserve">${escapeXml(part)}</w:t></w:r>`,
+        )
+        .join('');
       return i < lines.length - 1 ? `${run}<w:r><w:br/></w:r>` : run;
     })
     .join('');
