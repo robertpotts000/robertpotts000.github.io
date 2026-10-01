@@ -48,10 +48,13 @@ asked.
 - **Finish the job.** A piece isn't added until the build passes and the change
   is pushed; he expects the live URL back, not a handoff. The one hard stop is a
   failing build — never push one, and say plainly what broke.
-- **Don't add what he didn't ask for.** `details` and `publication` are stored
-  but deliberately not rendered anywhere; the About and Editing pages still carry
+- **Don't add what he didn't ask for.** The About and Editing pages still carry
   placeholder copy he intends to write himself. Leave all of it alone unless he
   raises it. No new fields, pages, or markup on your own initiative.
+- **Check the code before saying what the site shows.** `details` appears in the
+  sidebar under the cover image on each piece's page, and `publication` appears
+  on the piece cards. An earlier version of these notes said neither was
+  displayed, and Robert had to correct it.
 - **Stage explicit paths — never `git add -A`.** (His own README tells *him* to
   use `git add -A`, which is fine for him; that asymmetry is intentional, don't
   "fix" it.)

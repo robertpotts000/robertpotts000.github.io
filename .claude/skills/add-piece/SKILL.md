@@ -106,8 +106,7 @@ they never render, and seeds the metadata with them.
   `"music"` and `"interviews"` drive `/journalism/music` and
   `/journalism/interviews` (`src/pages/journalism/music.astro` and
   `interviews.astro`, filtering on `categories.includes(...)`). Any other
-  value is stored but not yet rendered anywhere — same as `details` and
-  `publication`.
+  value is stored but not yet rendered anywhere.
 
 - **`<details>Null</details>` is not an error.** It's Robert's documented
   convention for "nothing to put here" and nearly every piece uses it. Leave it
@@ -245,9 +244,10 @@ Don't second-guess a correct auto-fill, but this is the moment to catch a wrong
 publication code or a transposed date — cheaper now than after publishing.
 
 - `image` is a web path with a leading slash, resolved from `public/`.
-- `details` and `publication` are stored but **deliberately not rendered
-  anywhere** on the site. Leave them; don't add display markup unless
-  separately asked. `categories` and `sourceUrl` are the exceptions:
+- `details` is shown in the sidebar under the cover image on the piece's page,
+  and `publication` on the piece cards, so both are visible to readers — check
+  them as carefully as the headline. `categories` and `sourceUrl` work
+  differently:
   `"music"` and `"interviews"` feed the `/journalism/music` and
   `/journalism/interviews` pages (see §3) — any other category value is still
   unused; `sourceUrl` drives the paywall-respecting teaser on recent pieces
@@ -347,6 +347,5 @@ Briefly:
 - Push a failed build. `git add -A`. `git push --force`.
 - Add JSON keys that aren't in `src/content.config.ts`.
 - Hand-edit anything in `src/pieces/html/`.
-- Add display markup for `details` or `publication` — intentionally not shown.
-  (`categories` is the one exception — see §3.)
+- Add new display markup for fields the site doesn't already show.
 - Report success for a step that didn't actually run.
