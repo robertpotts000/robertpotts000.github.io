@@ -35,8 +35,10 @@ asked.
   e.g. "A history of Wasps" or "Martin Amis's Money" – and tell him what you chose.
   The headline and body are still his, verbatim.
 - **Ask for everything missing in one message.** Not one question at a time.
-- **Parenthetical dashes are spaced en-rules ( – ), not hyphens ( - ) or
-  em-rules (—).** Applies to site chrome copy (About, Journalism landing,
+- **Always use the spaced en-rule ( – ) for dashes, never hyphens ( - ) or
+  em-rules (—), and change them whenever you spot them** (confirmed Oct 2026,
+  including in the body of pieces you are preparing – fix them in the `.docx`).
+  Originally: parenthetical dashes are spaced en-rules, not hyphens or em-rules. Applies to site chrome copy (About, Journalism landing,
   etc.) and, going forward, to piece bodies too — fixed in the source
   `.docx`, never in generated `src/pieces/html/*.html`, same as any other
   body-text fix (§ above). Flag any deviation you spot rather than silently
@@ -61,7 +63,7 @@ asked.
 - **Categories follow his scheme** (set Oct 2026), lowercase in the JSON. `poetry`:
   poetry. `fiction`: fiction. `essays`: collected literary essays. `politics`: non-fiction with
   any political element – Parliament, legislation, government action, war, or any
-  area where law or regulation applies. `recreation`: sex, drugs,
+  area where law or regulation applies. `film`: film, and also TV and plays. `recreation`: sex, drugs,
   drink, fun and sport – some of which is also `politics`, but not all (trainspotting
   is `recreation` only). Apply the scheme to new pieces yourself; ask only if a piece
   genuinely doesn't fit. `relaxation` was deleted – never use it. `music` and `interviews`
