@@ -3,9 +3,30 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PieceCarousel from '../../components/PieceCarousel.astro';
 
+// Robert's chosen reading order, not chronological. Any recreation piece not
+// listed here (e.g. a new one added later) falls back to the end, newest first.
+const ORDER = [
+  'smoking-book',
+  'faber-smoking',
+  'drugs',
+  'booze',
+  'pleasure',
+  'romance-and-fight-club',
+  'emily-jenkins',
+  'platform-souls',
+  'duckworth-lewis',
+];
+
 const pieces = (
   await getCollection('pieces', (p) => !p.data.draft && p.data.categories.includes('recreation'))
-).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+).sort((a, b) => {
+  const ia = ORDER.indexOf(a.id);
+  const ib = ORDER.indexOf(b.id);
+  if (ia === -1 && ib === -1) return b.data.date.valueOf() - a.data.date.valueOf();
+  if (ia === -1) return 1;
+  if (ib === -1) return -1;
+  return ia - ib;
+});
 ---
 
 <BaseLayout title="Robert Potts — Recreations" active="journalism" appShell subnav subnavActive="recreations">
