@@ -8,6 +8,6 @@ const pieces = (
 ).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 
-<BaseLayout title="Robert Potts — Recreations" active="journalism" appShell subnav>
+<BaseLayout title="Robert Potts — Recreations" active="journalism" appShell subnav subnavActive="recreations">
   <PieceCarousel title="Recreations" pieces={pieces} ariaLabel="Recreations pieces" />
 </BaseLayout>

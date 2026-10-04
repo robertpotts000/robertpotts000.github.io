@@ -1,13 +1,14 @@
 ---
 interface Props {
   /** Which link to mark as the current page, if any. */
-  active?: 'interviews' | 'music' | 'archive';
+  active?: 'interviews' | 'music' | 'recreations' | 'archive';
 }
 const { active } = Astro.props;
 
 const links = [
   { href: '/journalism/interviews', label: 'Interviews', key: 'interviews' },
   { href: '/journalism/music', label: 'Music', key: 'music' },
+  { href: '/journalism/recreations', label: 'Recreations', key: 'recreations' },
   { href: '/journalism/archive', label: 'Archive', key: 'archive' },
 ] as const;
 ---

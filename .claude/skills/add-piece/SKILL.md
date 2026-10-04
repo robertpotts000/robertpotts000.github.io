@@ -106,8 +106,9 @@ they never render, and seeds the metadata with them.
   `"music"`, `"interviews"` and `"recreation"` drive `/journalism/music`,
   `/journalism/interviews` and `/journalism/recreations` (`music.astro`,
   `interviews.astro` and `recreations.astro` in `src/pages/journalism/`, filtering on
-  `categories.includes(...)`; the Recreations page is linked only from the word
-  "recreations" on the Journalism landing page). Any other
+  `categories.includes(...)`; the Recreations page sits in the sub-menu between
+  Music and Archive and is linked from the word "recreations" on the Journalism
+  landing page). Any other
   value is stored but not yet rendered anywhere.
 
 - **`<details>Null</details>` is not an error.** It's Robert's documented
