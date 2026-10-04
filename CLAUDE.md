@@ -55,6 +55,13 @@ asked.
   sidebar under the cover image on each piece's page, and `publication` appears
   on the piece cards. An earlier version of these notes said neither was
   displayed, and Robert had to correct it.
+- **Categories follow his scheme** (set Oct 2026), lowercase in the JSON. `poetry`:
+  poetry. `fiction`: fiction. `essays`: collected literary essays. `politics`: any
+  non-fiction in an area where law or regulation applies. `recreation`: sex, drugs,
+  drink, fun and sport – some of which is also `politics`, but not all (trainspotting
+  is `recreation` only). Don't add `politics` or any other category beyond what he
+  has said; ask. `relaxation` was deleted – never use it. `music` and `interviews`
+  are the two that drive pages today.
 - **Stage explicit paths — never `git add -A`.** (His own README tells *him* to
   use `git add -A`, which is fine for him; that asymmetry is intentional, don't
   "fix" it.)

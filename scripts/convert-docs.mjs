@@ -277,6 +277,9 @@ async function main() {
     html = url.html;
     const category = extractTag(html, 'category');
     html = category.html;
+    // <tag> holds a keyword list for his own reference; it isn't used on the site,
+    // but it must not leak into the body as visible text.
+    html = extractTag(html, 'tag').html;
     const categories = category.value
       ? category.value
           .split(',')
