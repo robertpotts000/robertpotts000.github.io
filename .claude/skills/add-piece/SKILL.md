@@ -102,10 +102,12 @@ they never render, and seeds the metadata with them.
   into the `categories` array, e.g. `<category>pop, guardian</category>` →
   `["pop", "guardian"]`. A piece can carry several. Leave it off entirely if
   Robert doesn't mention it — don't invent categories on his behalf, and don't
-  ask him to backfill it on old pieces unprompted. Two values are live:
-  `"music"` and `"interviews"` drive `/journalism/music` and
-  `/journalism/interviews` (`src/pages/journalism/music.astro` and
-  `interviews.astro`, filtering on `categories.includes(...)`). Any other
+  ask him to backfill it on old pieces unprompted. Three values are live:
+  `"music"`, `"interviews"` and `"recreation"` drive `/journalism/music`,
+  `/journalism/interviews` and `/journalism/recreations` (`music.astro`,
+  `interviews.astro` and `recreations.astro` in `src/pages/journalism/`, filtering on
+  `categories.includes(...)`; the Recreations page is linked only from the word
+  "recreations" on the Journalism landing page). Any other
   value is stored but not yet rendered anywhere.
 
 - **`<details>Null</details>` is not an error.** It's Robert's documented

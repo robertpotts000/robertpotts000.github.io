@@ -66,8 +66,9 @@ asked.
   area where law or regulation applies. `film`: film, and also TV and plays. `recreation`: sex, drugs,
   drink, fun and sport – some of which is also `politics`, but not all (trainspotting
   is `recreation` only). Apply the scheme to new pieces yourself; ask only if a piece
-  genuinely doesn't fit. `relaxation` was deleted – never use it. `music` and `interviews`
-  are the two that drive pages today.
+  genuinely doesn't fit. `relaxation` was deleted – never use it. `music`, `interviews` and
+  `recreation` drive pages today (`/journalism/recreations` is linked only from the
+  word "recreations" on the Journalism landing page, not from the sub-menu).
 - **Stage explicit paths — never `git add -A`.** (His own README tells *him* to
   use `git add -A`, which is fine for him; that asymmetry is intentional, don't
   "fix" it.)

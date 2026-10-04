@@ -32,7 +32,7 @@ const pieces = defineCollection({
      * link here, out of respect for the outlet's paywall — see src/lib/gating.ts.
      */
     sourceUrl: z.string().url().optional(),
-    /** Curated-page groupings; a piece may carry several. "music" and "interviews" drive /journalism/music and /journalism/interviews. */
+    /** Curated-page groupings; a piece may carry several. "music", "interviews" and "recreation" drive /journalism/music, /journalism/interviews and /journalism/recreations. */
     categories: z.array(z.string()).optional().default([]),
   }),
 });
