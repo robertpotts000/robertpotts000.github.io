@@ -134,6 +134,31 @@ the metadata back to him, `npm run build`, commit, push. Stage the newly
 generated `.docx` alongside the other files in the commit, same as any other
 piece.
 
+## PDFs – Robert's standing instructions (Oct 2026)
+
+Robert may send a PDF instead of a photo or a .docx, and expects it to be
+prepared end to end. Read it with the Read tool (use `pages`), and follow this
+skill's steps with these differences. If the PDF is a scan, transcribe as above;
+if it has real text, take the text exactly as printed.
+
+- **Don't gate on a read-back.** Prepare the piece, then ask only about genuine
+  doubts (an illegible word, a missing date or publication). Report what you
+  chose in the final message so he can correct it.
+- **Write the subheading yourself.** Brief and precise: a few words naming the
+  subject, e.g. "A history of Wasps" or "Martin Amis's Money". Not a standfirst,
+  not a sentence of opinion. Tell him what you chose.
+- **Categories:** apply the scheme in `CLAUDE.md` without asking. Politics covers
+  non-fiction with any political element (Parliament, legislation, government
+  action, war).
+- **Cover image: find a picture of the dust jacket** and save it as
+  `public/images/pieces/<Original filename>.jpg` so the converter picks it up.
+  With more than one book, choose by priority: the clearest image; the most
+  discussed work; the first work mentioned. Say which book you used and where the
+  image came from. Keep it under roughly 300 KB.
+- **Indented quotations:** wrap any long quotation set apart in the print in
+  `<quote>…</quote>` inside the body paragraph text (add-piece §3a), so it
+  renders as the indented block quote. Use `*italic*` for italics.
+
 ## Never
 
 - Everything `add-piece`'s "Never" section says.
