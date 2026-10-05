@@ -148,6 +148,8 @@ someone else's poem, and so on.
   is kept as-is.
 - Same typo risk as the other tags: a missing `>` leaks `&lt;quote` into the
   body as visible text instead of being recognised.
+- Don't put quotation marks round the whole indented passage – the indent replaces
+  them. Marks inside the passage stay.
 - Optional, and there's no limit on how many appear in one piece.
 
 ## 3b. `<url>` gates a piece behind its outlet's paywall for a year

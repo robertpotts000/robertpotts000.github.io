@@ -60,6 +60,11 @@ asked.
   sidebar under the cover image on each piece's page, and `publication` appears
   on the piece cards. An earlier version of these notes said neither was
   displayed, and Robert had to correct it.
+- **Indented quotes carry no quotation marks.** Long quoted matter (poems, extracts) is
+  set as a `<quote>…</quote>` block, which the site indents; the opening and closing
+  quotation marks round the whole passage are then redundant and are removed (marks
+  *inside* the passage stay). Fix this in the `.docx`. When he names files with unindented
+  or still-quoted passages, fix them the same way. (Oct 2026)
 - **Categories follow his scheme** (set Oct 2026), lowercase in the JSON. `poetry`:
   poetry. `fiction`: fiction. `essays`: collected literary essays. `politics`: non-fiction with
   any political element – Parliament, legislation, government action, war, or any
