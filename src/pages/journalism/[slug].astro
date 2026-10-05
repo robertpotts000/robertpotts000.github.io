@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { piece } = Astro.props;
-const { headline, subheading, type, date, image, details, sourceUrl } = piece.data;
+const { headline, subheading, type, date, image, details, sourceUrl, teaserParagraphs } = piece.data;
 const detailLines =
   details && details !== 'Null' ? details.split('\n').filter((line) => line.trim()) : [];
 
@@ -27,7 +27,7 @@ const key = Object.keys(htmlModules).find((k) => k.endsWith(`/${piece.id}.html`)
 let body = key ? (htmlModules[key] as string) : '';
 
 if (body && sourceUrl && isGated({ type, date, sourceUrl })) {
-  body = teaser(body, sourceUrl) ?? body;
+  body = teaser(body, sourceUrl, teaserParagraphs) ?? body;
 }
 
 const dateFmt = new Intl.DateTimeFormat('en-GB', {

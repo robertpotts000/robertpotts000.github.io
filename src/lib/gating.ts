@@ -11,6 +11,7 @@ interface GateableData {
   type: string;
   date: Date;
   sourceUrl?: string;
+  teaserParagraphs?: number;
 }
 
 /** Self-published pieces have no outlet paywall to respect. */
@@ -66,11 +67,15 @@ function splitParagraphs(bodyHtml: string): string[] {
  * enough left over to be worth hiding — gating a piece down to nothing but a
  * "continue reading" link with no piece left behind it defeats the point.
  */
-export function teaser(bodyHtml: string, sourceUrl: string): string | null {
+export function teaser(
+  bodyHtml: string,
+  sourceUrl: string,
+  paragraphCount: number = PARAGRAPH_COUNT,
+): string | null {
   const units = splitParagraphs(bodyHtml);
-  if (units.length <= PARAGRAPH_COUNT) return null;
+  if (units.length <= paragraphCount) return null;
 
-  const shown = units.slice(0, PARAGRAPH_COUNT);
+  const shown = units.slice(0, paragraphCount);
   const shownLength = plainText(shown.join('')).length;
   if (shownLength > plainText(bodyHtml).length * 0.6) return null;
 

@@ -26,7 +26,7 @@ for (const piece of pieces) {
   let html = htmlModules[key] as string;
   const { sourceUrl } = piece.data;
   if (sourceUrl && isGated(piece.data)) {
-    html = teaser(html, sourceUrl) ?? html;
+    html = teaser(html, sourceUrl, piece.data.teaserParagraphs) ?? html;
   }
   bodies[piece.id] = html.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 }

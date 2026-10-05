@@ -163,6 +163,9 @@ action needed, but note this site only rebuilds on push, so a scheduled
 weekly rebuild (`.github/workflows/static.yml`) is what actually flips it on
 schedule, not the passage of time alone.
 
+- The teaser shows two paragraphs. For a piece with very short paragraphs, add
+  `"teaserParagraphs": 3` (any number from 1 to 10) to its JSON to show more. It is
+  set by hand in the JSON, not from the document. "Partita" uses 3.
 - Ask for this link as part of publishing any piece less than a year old —
   same tier as the cover image (§5): ask and stop rather than publish a
   recent piece with nothing to gate it.
