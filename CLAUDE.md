@@ -68,6 +68,10 @@ asked.
 - **Pieces he has pulled stay pulled.** `mimi-khalvati` and `john-wilkinson` are set
   `"draft": true` at his request (Oct 2026) and may never be published; don't restore them
   unless he asks.
+- **Never lift a quotation out of a running paragraph to indent it.** A paragraph with
+  quoted matter inside it, marked off by quotation marks, stays exactly as written
+  (Bracewell, Oct 2026: he corrected me for indenting two such passages). Indent only a
+  passage he has already set on its own line(s) or paragraph, or one he names.
 - **Indented quotes carry no quotation marks.** Long quoted matter (poems, extracts) is
   set as a `<quote>…</quote>` block, which the site indents; the opening and closing
   quotation marks round the whole passage are then redundant and are removed (marks
