@@ -57,6 +57,7 @@ const PUBLICATION_BY_CODE = {
   NS: 'New Statesman',
   O: 'Observer',
   IOS: 'Independent on Sunday',
+  FT: 'Financial Times',
 };
 
 function slugifyText(text) {

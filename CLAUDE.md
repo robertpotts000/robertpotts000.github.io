@@ -75,6 +75,12 @@ asked.
 
 ## Repo facts that bite
 
+**Same-day pieces.** Lists sort newest first by `date`, and two pieces on the same
+day have no defined order. To put one first, give its JSON `date` a time of day
+(e.g. `"2026-10-03T12:00:00Z"`; the site shows only the day). The Financial Times
+piece "Partita" is set this way so it sits before the Christopher Reid piece, both
+dated 3 October 2026. The converter writes plain dates, so re-seeding a JSON loses it.
+
 **Push target.** The local branch is `master` but tracks `origin/main`, so plain
 `git push` fails with an upstream mismatch. Always:
 
