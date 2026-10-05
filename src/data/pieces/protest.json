@@ -5,5 +5,8 @@
   "date": "1998-10-11",
   "image": "/images/pieces/protest.jpg",
   "publication": "Observer",
-  "details": "The Penguin Book of Twentieth Century Protest\nedited by Brian MacArthur\nPenguin £20, pp440"
+  "details": "The Penguin Book of Twentieth Century Protest\nedited by Brian MacArthur\nPenguin £20, pp440",
+  "categories": [
+    "politics"
+  ]
 }
