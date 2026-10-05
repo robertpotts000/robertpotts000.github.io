@@ -111,6 +111,10 @@ they never render, and seeds the metadata with them.
   landing page). Any other
   value is stored but not yet rendered anywhere.
 
+- **Keep `<details>` short.** Titles, authors, publishers, pages and prices at most –
+  never ISBNs, "Review of…", the journal citation, or an address (see `CLAUDE.md`).
+  Strip these from "In brief" pieces especially.
+
 - **`<details>Null</details>` is not an error.** It's Robert's documented
   convention for "nothing to put here" and nearly every piece uses it. Leave it
   alone; don't try to empty or remove it.

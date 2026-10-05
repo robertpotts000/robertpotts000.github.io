@@ -60,6 +60,14 @@ asked.
   sidebar under the cover image on each piece's page, and `publication` appears
   on the piece cards. An earlier version of these notes said neither was
   displayed, and Robert had to correct it.
+- **Book details are minimal.** In `<details>` keep to titles, authors, publishers,
+  pages and prices at most. Never ISBNs, and no "Review of…" prefix, journal citation
+  (e.g. "The Times Literary Supplement, 5 October 2001, p. 27"), distributor or postal
+  address – the details are shown on the page, so this clutter is visible. Applies to
+  anything from an "In brief" column especially. (Oct 2026)
+- **Pieces he has pulled stay pulled.** `mimi-khalvati` and `john-wilkinson` are set
+  `"draft": true` at his request (Oct 2026) and may never be published; don't restore them
+  unless he asks.
 - **Indented quotes carry no quotation marks.** Long quoted matter (poems, extracts) is
   set as a `<quote>…</quote>` block, which the site indents; the opening and closing
   quotation marks round the whole passage are then redundant and are removed (marks
