@@ -5,5 +5,8 @@
   "date": "2008-07-05",
   "image": "/images/pieces/john-redmond.avif",
   "publication": "Guardian",
-  "details": "MUDe\nby John Redmond\n52pp, Carcanet, £9.95"
+  "details": "MUDe\nby John Redmond\n52pp, Carcanet, £9.95",
+  "categories": [
+    "poetry"
+  ]
 }

@@ -5,5 +5,8 @@
   "date": "2000-07-15",
   "image": "/images/pieces/craig-raine.jpg",
   "publication": "Guardian",
-  "details": "A La Recherche du Temps Perdu: A Poem\nCraig Raine\nPicador, £8, 41pp"
+  "details": "A La Recherche du Temps Perdu: A Poem\nCraig Raine\nPicador, £8, 41pp",
+  "categories": [
+    "poetry"
+  ]
 }

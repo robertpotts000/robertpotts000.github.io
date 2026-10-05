@@ -5,5 +5,8 @@
   "date": "2002-01-25",
   "image": "/images/pieces/hill-speech-speech.jpg",
   "publication": "TLS",
-  "details": "Speech! Speech!\n60pp, Penguin, £9.99"
+  "details": "Speech! Speech!\n60pp, Penguin, £9.99",
+  "categories": [
+    "poetry"
+  ]
 }

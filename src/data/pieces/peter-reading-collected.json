@@ -5,5 +5,8 @@
   "date": "2003-12-13",
   "image": "/images/pieces/peter-reading-collected.jpg",
   "publication": "Guardian",
-  "details": "Collected Poems: 1997-2003\nby Peter Reading\n319pp, Bloodaxe, £9.95"
+  "details": "Collected Poems: 1997-2003\nby Peter Reading\n319pp, Bloodaxe, £9.95",
+  "categories": [
+    "poetry"
+  ]
 }

@@ -5,5 +5,9 @@
   "date": "2016-07-01",
   "image": "/images/pieces/geoffrey-hill.avif",
   "publication": "Guardian",
-  "details": "Null"
+  "details": "Null",
+  "categories": [
+    "poetry",
+    "obituary"
+  ]
 }

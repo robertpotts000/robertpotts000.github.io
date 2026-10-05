@@ -6,5 +6,8 @@
   "image": "/images/pieces/tom-paulin.webp",
   "publication": "Daily Telegraph",
   "sourceUrl": "https://www.telegraph.co.uk/books/what-to-read/best-poetry-books-reviews",
-  "details": "Namanlagh\nTom Paulin\n64pp, Faber, £12.99."
+  "details": "Namanlagh\nTom Paulin\n64pp, Faber, £12.99.",
+  "categories": [
+    "poetry"
+  ]
 }

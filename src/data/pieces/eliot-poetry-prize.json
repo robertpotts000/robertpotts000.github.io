@@ -5,5 +5,8 @@
   "date": "2006-01-15",
   "image": "/images/pieces/eliot-poetry-prize.jpeg",
   "publication": "Guardian",
-  "details": "Null"
+  "details": "Null",
+  "categories": [
+    "poetry"
+  ]
 }

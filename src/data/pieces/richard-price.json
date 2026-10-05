@@ -5,5 +5,8 @@
   "date": "2005-06-18",
   "image": "/images/pieces/richard-price.webp",
   "publication": "Guardian",
-  "details": "Lucky Day\nby Richard Price\n128pp, Carcanet, £8.95"
+  "details": "Lucky Day\nby Richard Price\n128pp, Carcanet, £8.95",
+  "categories": [
+    "poetry"
+  ]
 }
