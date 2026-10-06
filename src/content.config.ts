@@ -34,7 +34,7 @@ const pieces = defineCollection({
     sourceUrl: z.string().url().optional(),
     /** How many opening paragraphs the paywall teaser shows. Defaults to 2; raise it for a piece whose paragraphs are very short. */
     teaserParagraphs: z.number().int().min(1).max(10).optional(),
-    /** Curated-page groupings; a piece may carry several. "music", "interviews" and "recreation" drive /journalism/music, /journalism/interviews and /journalism/recreations. */
+    /** Curated-page groupings; a piece may carry several. "music", "interviews", "fiction", "poetry" and "recreation" drive /journalism/music, /journalism/interviews, /journalism/fiction, /journalism/poetry and /journalism/recreations. */
     categories: z.array(z.string()).optional().default([]),
   }),
 });

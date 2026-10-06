@@ -102,13 +102,13 @@ they never render, and seeds the metadata with them.
   into the `categories` array, e.g. `<category>pop, guardian</category>` →
   `["pop", "guardian"]`. A piece can carry several. Leave it off entirely if
   Robert doesn't mention it — don't invent categories on his behalf, and don't
-  ask him to backfill it on old pieces unprompted. Three values are live:
-  `"music"`, `"interviews"` and `"recreation"` drive `/journalism/music`,
-  `/journalism/interviews` and `/journalism/recreations` (`music.astro`,
-  `interviews.astro` and `recreations.astro` in `src/pages/journalism/`, filtering on
-  `categories.includes(...)`; the Recreations page sits in the sub-menu between
-  Music and Archive and is linked from the word "recreations" on the Journalism
-  landing page). Any other
+  ask him to backfill it on old pieces unprompted. Five values are live:
+  `"music"`, `"interviews"`, `"fiction"`, `"poetry"` and `"recreation"` drive
+  `/journalism/music`, `/journalism/interviews`, `/journalism/fiction`,
+  `/journalism/poetry` and `/journalism/recreations` (one `.astro` file each in
+  `src/pages/journalism/`, filtering on `categories.includes(...)`). The sub-menu
+  reads Interviews, Fiction, Poetry, Music, Recreations, Archive; the Journalism
+  landing page links the words "poetry", "fiction" and "recreations". Any other
   value is stored but not yet rendered anywhere.
 
 - **Keep `<details>` short.** Titles, authors, publishers, pages and prices at most –
