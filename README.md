@@ -42,6 +42,7 @@ when. Name the `.docx` file exactly like this, with spaces between each part:
 | O | Observer |
 | IoS | Independent on Sunday |
 | FT | Financial Times |
+| OP | Oxford Poetry |
 
 **Year, Month, Day** are numbers — Year as 4 digits, Month and Day as 2 digits each
 (e.g. `03` not `3`).

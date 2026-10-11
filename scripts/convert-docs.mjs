@@ -58,6 +58,7 @@ const PUBLICATION_BY_CODE = {
   O: 'Observer',
   IOS: 'Independent on Sunday',
   FT: 'Financial Times',
+  OP: 'Oxford Poetry',
 };
 
 function slugifyText(text) {
