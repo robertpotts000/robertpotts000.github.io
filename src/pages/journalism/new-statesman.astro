@@ -1,0 +1,14 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PieceCarousel from '../../components/PieceCarousel.astro';
+
+// Unlisted page: deliberately not in any menu or link, and marked noindex.
+const pieces = (
+  await getCollection('pieces', (p) => !p.data.draft && p.data.publication === 'New Statesman')
+).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="Robert Potts — New Statesman" active="journalism" appShell noindex>
+  <PieceCarousel title="New Statesman" pieces={pieces} ariaLabel="New Statesman pieces" />
+</BaseLayout>

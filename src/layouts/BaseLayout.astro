@@ -29,6 +29,8 @@ interface Props {
   /** Show the Interviews/Music/Archive strip under the top bar — journalism pages only. */
   subnav?: boolean;
   /** Which subnav link to mark current; omit on the Journalism landing page itself. */
+  /** Ask search engines not to list the page (for unlinked pages). */
+  noindex?: boolean;
   subnavActive?: 'interviews' | 'fiction' | 'poetry' | 'music' | 'recreations' | 'archive';
 }
 
@@ -39,6 +41,7 @@ const {
   appShell = false,
   subnav = false,
   subnavActive,
+  noindex = false,
 } = Astro.props;
 ---
 
@@ -49,6 +52,7 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta name="color-scheme" content="light" />
   </head>
