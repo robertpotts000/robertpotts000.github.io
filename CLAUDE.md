@@ -72,6 +72,7 @@ asked.
   single ellipsis character (also for three typed dots) in any piece you prepare, in the
   `.docx`. The existing archive was swept once, at his request (Oct 2026), skipping the
   pulled pieces; he approved that, including the three-dot form.
+- **No headline in the print? Use the book title, with subheading "Null"** (Oct 2026). Brief reviews in "Fiction in brief" have no headline of their own: headline = the book's title, `<subheading>Null</subheading>` (the converter then stores an empty subheading and the site simply omits it).
 - **Never lift a quotation out of a running paragraph to indent it.** A paragraph with
   quoted matter inside it, marked off by quotation marks, stays exactly as written
   (Bracewell, Oct 2026: he corrected me for indenting two such passages). Indent only a
@@ -90,7 +91,7 @@ asked.
   genuinely doesn't fit. `travel` and `fun` (Oct 2026, first used on the Bill Bryson review) are
   categories of their own, not part of `recreation`: `fun` is for humorous books. Each
   will get a page once there are enough pieces; don't build pages, or go back and
-  re-tag old pieces, until he says – the categories are emerging step by step. `relaxation` was deleted – never use it. `music`, `interviews` and
+  re-tag old pieces, until he says – the categories are emerging step by step. `thriller` (Oct 2026, his addition) is for thrillers and crime fiction, always alongside `fiction` – e.g. the Smiley novels, Banks's *The Business*, Tallis; it has no page yet. `relaxation` was deleted – never use it. `music`, `interviews` and
   `recreation` drive pages today (`/journalism/recreations` is in the Journalism sub-menu, between Music and
   Archive, and is also linked from the word "recreations" on the landing page).
 - **Stage explicit paths — never `git add -A`.** (His own README tells *him* to

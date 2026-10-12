@@ -39,13 +39,13 @@ const dateFmt = new Intl.DateTimeFormat('en-GB', {
 const iso = date.toISOString().slice(0, 10);
 ---
 
-<BaseLayout title={`${headline} — Robert Potts`} description={subheading} active="journalism">
+<BaseLayout title={`${headline} — Robert Potts`} description={subheading || headline} active="journalism">
   <article class="page piece">
     <header class="piece__header">
       <div class="piece__heading">
         <p class="piece__eyebrow"><a href="/journalism">← Journalism</a></p>
         <h1 class="piece__title">{headline}</h1>
-        <p class="piece__subhead">{subheading}</p>
+        {subheading && <p class="piece__subhead">{subheading}</p>}
         <div class="piece__tag"><TagBadge type={type} /></div>
       </div>
       <div class="piece__date">

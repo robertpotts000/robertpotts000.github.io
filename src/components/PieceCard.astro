@@ -65,7 +65,7 @@ const iso = hero && date ? date.toISOString().slice(0, 10) : undefined;
     </div>
     <div class="card__body">
       <h2 class="card__headline">{headline}</h2>
-      <p class="card__subhead">{subheading}</p>
+      {subheading && <p class="card__subhead">{subheading}</p>}
       <div class="card__footer">
         <TagBadge type={type} />
         <span class="card__meta">

@@ -273,6 +273,12 @@ async function main() {
     html = headline.html;
     const subheading = extractTag(html, 'subheading');
     html = subheading.html;
+    // <subheading>Null</subheading> means "no subheading" (brief reviews): stored as an empty string.
+    const noSubheading = /^null$/i.test(subheading.value || '');
+    if (noSubheading) {
+      subheading.value = '';
+      subheading.blank = true;
+    }
     const details = extractTag(html, 'details');
     html = details.html;
     const url = extractTag(html, 'url');
@@ -328,7 +334,7 @@ async function main() {
       continue;
     }
 
-    if (parsed && headline.value && subheading.value && cover) {
+    if (parsed && headline.value && (subheading.value || subheading.blank) && cover) {
       const meta = {
         headline: headline.value,
         subheading: subheading.value,
@@ -358,7 +364,7 @@ async function main() {
       const missing = [];
       if (!parsed) missing.push('type/date/publication (fix the filename)');
       if (!headline.value) missing.push('headline (add a <headline> tag to the doc, or ask)');
-      if (!subheading.value) missing.push('subheading (add a <subheading> tag to the doc, or ask)');
+      if (!subheading.value && !subheading.blank) missing.push('subheading (add a <subheading> tag to the doc, or ask)');
       if (!cover) {
         missing.push(
           `cover image (put "${docxBase}.jpg" — or "${slug}.jpg" — in ${rel(IMG_DIR)})`,

@@ -21,7 +21,7 @@ Work in order. Never push a build that failed.
 |---|---|---|
 | The `.docx` | Robert | Ask for the file. |
 | `headline` | `<headline>` tag in the doc | Ask. His words, not yours. |
-| `subheading` | `<subheading>` tag in the doc | Ask. His words, not yours. |
+| `subheading` | `<subheading>` tag in the doc | Ask. His words, not yours. `Null` is allowed (brief reviews): stored as empty, not shown. |
 | `type`, `date`, `publication` | The filename | Fix the filename (§2). |
 | Cover image | An image file Robert drops in `public/images/pieces/` | **Ask him for one and stop.** There is no placeholder — see §5. |
 | `details` | `<details>` tag in the doc | Optional. Genuinely fine to omit. |
