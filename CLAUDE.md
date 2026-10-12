@@ -69,8 +69,9 @@ asked.
   `"draft": true` at his request (Oct 2026) and may never be published; don't restore them
   unless he asks.
 - **Ellipses are "…", never ". . ." or "..."** (Oct 2026). Change spaced dots to the
-  single ellipsis character in any piece you prepare, in the `.docx`; no need to hunt
-  through published pieces for it uninvited.
+  single ellipsis character (also for three typed dots) in any piece you prepare, in the
+  `.docx`. The existing archive was swept once, at his request (Oct 2026), skipping the
+  pulled pieces; he approved that, including the three-dot form.
 - **Never lift a quotation out of a running paragraph to indent it.** A paragraph with
   quoted matter inside it, marked off by quotation marks, stays exactly as written
   (Bracewell, Oct 2026: he corrected me for indenting two such passages). Indent only a
