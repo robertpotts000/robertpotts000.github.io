@@ -118,6 +118,8 @@ piece's `<details>` tag or its JSON `"details"` field is his documented
 convention for "no details" (see `README.md`) and nearly every piece uses it.
 Don't flag it and don't try to make it empty or omitted.
 
+**Contact page.** `/contact` (menu item after Child Literacy, and a link after LinkedIn on the About page) shows his email built in the browser from `data-u`/`data-d` attributes so the address never sits whole in the page source; keep it that way (no plain `mailto:` in the HTML). In `.astro` templates, spaces beside an inline link are squeezed out unless written as `{' '}` (cost a fix, Oct 2026).
+
 **Files on disk are CRLF.** `core.autocrlf=true`, no `.gitattributes`, so the
 repo stores LF and checks out CRLF. A multi-line string match against a file read
 from disk will silently fail: normalise to LF before matching, and write back
