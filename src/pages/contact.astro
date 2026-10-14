@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHeader from '../components/PageHeader.astro';
+---
+
+<BaseLayout title="Robert Potts – Contact" active="contact">
+  <div class="page contact">
+    <PageHeader title="Contact" />
+
+    <div class="contact__grid">
+      <div class="contact__body">
+        <p>
+          As well as journalistic assignments, I am available for bespoke editing and writing
+          services, governance work, and consultancy about the use of AI in the cultural and
+          educational sectors. If you would like to contact me, please email me at
+          <!-- The address is assembled in the browser so that it never appears whole in the page source (spam robots). -->
+          <a id="contact-email" href="#" data-u="robertpotts000" data-d="gmail.com">
+            <noscript>robertpotts000 [at] gmail [dot] com</noscript>
+          </a>
+          or connect with me on LinkedIn at
+          <a
+            href="https://www.linkedin.com/in/robert-potts-rp"
+            target="_blank"
+            rel="noopener noreferrer">www.linkedin.com/in/robert-potts-rp</a
+          >
+        </p>
+      </div>
+
+      <figure class="contact__photo">
+        <img src="/images/contact/robert-potts.jpg" alt="Robert Potts" width="700" height="700" />
+      </figure>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  const link = document.getElementById('contact-email');
+  if (link) {
+    const address = `${link.dataset.u}@${link.dataset.d}`;
+    link.href = `mailto:${address}`;
+    link.textContent = address;
+  }
+</script>
+
+<style>
+  .contact {
+    padding-top: clamp(2rem, 6vw, 4rem);
+    padding-bottom: 5rem;
+  }
+  .contact__grid {
+    margin-top: clamp(1.5rem, 4vw, 2.75rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+  .contact__body {
+    max-width: var(--reading-max);
+    font-size: 1.2rem;
+  }
+  .contact__body a {
+    text-decoration: underline;
+    overflow-wrap: anywhere;
+  }
+  .contact__photo {
+    margin: 0;
+  }
+  .contact__photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-line);
+  }
+
+  @media (max-width: 52rem) {
+    .contact__grid {
+      grid-template-columns: 1fr;
+    }
+    .contact__photo {
+      max-width: 22rem;
+    }
+  }
+</style>

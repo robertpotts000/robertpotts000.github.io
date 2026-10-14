@@ -1,6 +1,6 @@
 ---
 interface Props {
-  active?: 'about' | 'journalism' | 'editing' | 'volunteering';
+  active?: 'about' | 'journalism' | 'editing' | 'volunteering' | 'contact';
 }
 const { active } = Astro.props;
 
@@ -8,6 +8,7 @@ const links = [
   { href: '/', label: 'About Me', key: 'about' },
   { href: '/journalism', label: 'Journalism', key: 'journalism' },
   { href: '/volunteering', label: 'Child Literacy', key: 'volunteering' },
+  { href: '/contact', label: 'Contact', key: 'contact' },
 ] as const;
 ---
 
