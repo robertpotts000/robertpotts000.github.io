@@ -5,6 +5,7 @@ import PageHeader from '../components/PageHeader.astro';
 
 <BaseLayout title="Robert Potts – Contact" active="contact">
   <div class="page contact">
+    {/* The email address is assembled in the browser (see script below) so it never appears whole in the page source. */}
     <PageHeader title="Contact" />
 
     <div class="contact__grid">
@@ -13,12 +14,10 @@ import PageHeader from '../components/PageHeader.astro';
           As well as journalistic assignments, I am available for bespoke editing and writing
           services, governance work, and consultancy about the use of AI in the cultural and
           educational sectors. If you would like to contact me, please email me at
-          <!-- The address is assembled in the browser so that it never appears whole in the page source (spam robots). -->
-          <a id="contact-email" href="#" data-u="robertpotts000" data-d="gmail.com">
-            <noscript>robertpotts000 [at] gmail [dot] com</noscript>
-          </a>
-          or connect with me on LinkedIn at
-          <a
+          {' '}<a id="contact-email" href="#" data-u="robertpotts000" data-d="gmail.com"
+            ><noscript>robertpotts000 [at] gmail [dot] com</noscript></a
+          >{' '}
+          or connect with me on LinkedIn at{' '}<a
             href="https://www.linkedin.com/in/robert-potts-rp"
             target="_blank"
             rel="noopener noreferrer">www.linkedin.com/in/robert-potts-rp</a
