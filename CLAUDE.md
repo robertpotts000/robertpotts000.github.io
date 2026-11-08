@@ -94,6 +94,7 @@ asked.
   re-tag old pieces, until he says – the categories are emerging step by step. `thriller` (Oct 2026, his addition) is for thrillers and crime fiction, always alongside `fiction` – e.g. the Smiley novels, Banks's *The Business*, Tallis; it has no page yet. `relaxation` was deleted – never use it. `music`, `interviews` and
   `recreation` drive pages today (`/journalism/recreations` is in the Journalism sub-menu, between Music and
   Archive, and is also linked from the word "recreations" on the landing page).
+- **Financial Times pieces get a 3-paragraph teaser** (Oct–Nov 2026): add `"teaserParagraphs": 3` to the JSON of every new FT piece ("Partita" and "Notes between nations" have it).
 - **Stage explicit paths — never `git add -A`.** (His own README tells *him* to
   use `git add -A`, which is fine for him; that asymmetry is intentional, don't
   "fix" it.)
